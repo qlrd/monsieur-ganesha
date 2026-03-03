@@ -1,0 +1,13 @@
+[project]
+# Nome do módulo atual (C00, C01, rush01, etc.)
+name = "C00"
+
+[forbidden]
+# Liste aqui as funções proibidas para este módulo.
+# Consulte o PDF do subject para saber quais são permitidas.
+functions = ["printf", "malloc", "realloc", "free", "calloc"]
+
+[commit]
+# Padrão regex para validar a mensagem de commit.
+# Padrão padrão: "ex00: descrição"  |  "rush01: fix"  |  "exam02: solução"
+pattern = "^(ex|rush|exam)\\d+: .+"

@@ -1,0 +1,31 @@
+- id: norminette
+  name: Norminette
+  description: Verifica arquivos C/H contra a norma 42
+  entry: ganesha norminette
+  language: python
+  files: '\.(c|h)$'
+  pass_filenames: true
+
+- id: c-compiler
+  name: Compilação C
+  description: Compila arquivos .c com -Wall -Wextra -Werror (syntax check)
+  entry: ganesha compiler
+  language: python
+  files: '\.c$'
+  pass_filenames: true
+
+- id: forbidden-functions
+  name: Funções Proibidas
+  description: Verifica uso de funções proibidas (configurável em .ganesha.toml)
+  entry: ganesha forbidden
+  language: python
+  files: '\.c$'
+  pass_filenames: true
+
+- id: commit-message
+  name: Formato de Commit
+  description: Valida formato da mensagem de commit (Conventional Commits 1.0.0)
+  entry: ganesha commit-msg
+  language: python
+  stages: [commit-msg]
+  pass_filenames: true
