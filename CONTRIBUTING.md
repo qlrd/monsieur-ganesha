@@ -1,6 +1,6 @@
 # Contributing
 
-Thank you for contributing to monsieur-piscinette.
+Thank you for contributing to monsieur-ganesha.
 
 ---
 
@@ -16,15 +16,16 @@ For small fixes (typos, obvious bugs) a direct pull request is fine.
 Fork the repository, then clone your fork:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/monsieur-piscinette
-cd monsieur-piscinette
+git clone https://github.com/YOUR_USERNAME/monsieur-ganesha
+cd monsieur-ganesha
 ```
 
-Build the project and run the full test suite:
+Install all dependencies (including dev extras) and run the full
+test suite:
 
 ```bash
-cargo build
-cargo test
+uv sync --dev
+pytest
 ```
 
 All tests must pass before opening a pull request.
@@ -33,11 +34,12 @@ All tests must pass before opening a pull request.
 
 ## Code style
 
-- Format Rust code with `cargo fmt` before every commit.
-- Lint with `cargo clippy -- -D warnings`. No warnings are allowed.
+- Format Python code with `black src/ tests/` before every commit.
+- Sort imports with `isort src/ tests/`.
+- Lint with `pylint src/ganesha/`. No warnings are allowed.
 - Keep prose (comments, docs, Markdown) at or below 72 characters
   per line.
-- Do not add unnecessary dependencies. Prefer `std` where possible.
+- Do not add unnecessary dependencies. Prefer stdlib where possible.
 
 ---
 
@@ -92,27 +94,22 @@ work under the terms of the MIT License. See the full
 
 ## Adding a new hook
 
-1. Create `src/checks/new_hook.rs` with a public `check` function.
-2. Export it in `src/checks/mod.rs`:
-
-   ```rust
-   pub mod new_hook;
-   ```
-
-3. Add a `Command` variant in `src/main.rs` and wire it in `run()`.
+1. Create `src/ganesha/checks/<name>.py` with a public `check`
+   function.
+2. Export it in `src/ganesha/checks/__init__.py`.
+3. Add a CLI subcommand in `src/ganesha/cli.py`.
 4. Register the hook in `.pre-commit-hooks.yaml`:
 
    ```yaml
    - id: new-hook
      name: New Hook
-     entry: piscinette new-hook
-     language: rust
+     entry: ganesha new-hook
+     language: python
      files: '\.(c|h)$'
      pass_filenames: true
    ```
 
-5. Write unit tests inside the module (`#[cfg(test)]`) and an
-   integration test file in `tests/test_new_hook.rs`.
+5. Write an integration test in `tests/test_<name>.py`.
 6. Update `CHANGELOG.md` under `[Unreleased]`.
 
 ---
@@ -129,9 +126,10 @@ work under the terms of the MIT License. See the full
 3. Ensure all CI checks pass locally:
 
    ```bash
-   cargo fmt --check
-   cargo clippy -- -D warnings
-   cargo test
+   black --check src/ tests/
+   isort --check-only src/ tests/
+   pylint src/ganesha/
+   pytest
    ```
 
 4. Push your branch and open a pull request against `main`.
@@ -148,13 +146,13 @@ merging. The CI pipeline must be green.
 Open an issue at:
 
 ```
-https://github.com/qlrd/monsieur-piscinette/issues
+https://github.com/qlrd/monsieur-ganesha/issues
 ```
 
 Include:
 
 - Your operating system and architecture
-- Rust version (`rustc --version`)
+- Python version (`python --version`)
 - `pre-commit` version (`pre-commit --version`)
 - Exact steps to reproduce the problem
 - Expected behaviour vs. actual behaviour

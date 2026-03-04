@@ -165,9 +165,9 @@ The script will:
 
 1. Set `git config --global core.editor vim`
 2. Install `pre-commit` via `uv` or `pip3`
-4. Create `.pre-commit-config.yaml` pointing to this repository
-5. Create a `.ganesha.toml` template with sensible defaults
-6. Activate the hooks with `pre-commit install`
+3. Create `.pre-commit-config.yaml` pointing to this repository
+4. Create a `.ganesha.toml` template with sensible defaults
+5. Activate the hooks with `pre-commit install`
 
 To configure manually, add the following to your
 `.pre-commit-config.yaml`:
@@ -432,8 +432,12 @@ git reset --hard HEAD@{n}         # recover the exact state
 ```
 
 Never modify the reflog. Never use `git push --force` to overwrite
-a shared branch. The reflog on your machine is yours — and it is
-the only honest witness you have.
+a shared branch — it discards commits that your teammates may have
+pulled. If you have rebased correctly and the reflog proves it,
+`git push --force-with-lease` is the safer alternative: it refuses
+to push if the remote has commits you have not seen, protecting
+against accidental overwrites. The reflog on your machine is yours —
+and it is the only honest witness you have.
 
 ---
 
@@ -530,7 +534,7 @@ and install the package via `language: python`.
 ### Project layout
 
 ```
-src/piscinette/
+src/ganesha/
   __init__.py       public API (re-exports checks + config)
   cli.py            thin CLI wrapper using argparse
   config.py         reads .ganesha.toml (tomllib — stdlib)
