@@ -1,8 +1,6 @@
 # Monsieur Ganesha
 
 [![CI](https://github.com/qlrd/monsieur-ganesha/actions/workflows/ci.yml/badge.svg)](https://github.com/qlrd/monsieur-ganesha/actions/workflows/ci.yml)
-[![PyPI downloads](https://img.shields.io/pypi/dm/monsieur-ganesha)](https://pypi.org/project/monsieur-ganesha/)
-[![PyPI version](https://img.shields.io/pypi/v/monsieur-ganesha)](https://pypi.org/project/monsieur-ganesha/)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
