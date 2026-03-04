@@ -1,0 +1,9 @@
+# Project source (not part of gh-pages site)
+src/
+tests/
+target/
+.venv/
+.pytest_cache/
+uv.lock
+*.pyc
+__pycache__/

@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Monsieur Piscinette — Documentation</title>
+  <style>
+    /* ── Reset ─────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── Tokens ─────────────────────────────────────────────────── */
+    :root {
+      --bg:        #F7F4EC;
+      --surface:   #FFFFFF;
+      --border:    #D8D0BC;
+      --text:      #1A1614;
+      --muted:     #5C5248;
+      --red:       #B01A1A;
+      --gold:      #8B6200;
+      --blue:      #1A3A7A;
+      --code-bg:   #EEE9DE;
+      --nav-w:     240px;
+      --sans:      system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+      --mono:      "JetBrains Mono", "Fira Code", "Cascadia Code",
+                   "Source Code Pro", Consolas, monospace;
+    }
+
+    /* ── Base ─────────────────────────────────────────────────── */
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--text);
+      background: var(--bg);
+      display: flex;
+    }
+
+    /* ── Sidebar nav ─────────────────────────────────────────── */
+    nav {
+      width: var(--nav-w);
+      min-height: 100vh;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 2rem 1.25rem;
+      position: sticky;
+      top: 0;
+      flex-shrink: 0;
+      font-size: 13px;
+    }
+    nav .logo {
+      font-family: var(--mono);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--red);
+      letter-spacing: .04em;
+      margin-bottom: 1.75rem;
+      display: block;
+    }
+    nav ul { list-style: none; }
+    nav ul li { margin: .15rem 0; }
+    nav ul li a {
+      color: var(--muted);
+      text-decoration: none;
+      display: block;
+      padding: .2rem .4rem;
+      border-radius: 3px;
+      transition: background .15s, color .15s;
+    }
+    nav ul li a:hover { background: var(--code-bg); color: var(--text); }
+    nav .section-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 1.2rem 0 .35rem .4rem;
+    }
+
+    /* ── Main content ─────────────────────────────────────────── */
+    main {
+      flex: 1;
+      max-width: 860px;
+      padding: 3rem 3rem 6rem;
+    }
+
+    /* ── Headings ─────────────────────────────────────────────── */
+    h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.2;
+      margin-bottom: .5rem;
+    }
+    h2 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 3rem 0 .75rem;
+      padding-bottom: .4rem;
+      border-bottom: 2px solid var(--border);
+    }
+    h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 2rem 0 .5rem;
+    }
+    h4 {
+      font-size: .9rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin: 1.5rem 0 .4rem;
+    }
+
+    /* ── Paragraphs & lists ───────────────────────────────────── */
+    p { margin-bottom: 1rem; color: var(--text); }
+    ul, ol {
+      margin: .5rem 0 1rem 1.5rem;
+      color: var(--text);
+    }
+    li { margin-bottom: .25rem; }
+
+    /* ── Code ─────────────────────────────────────────────────── */
+    code {
+      font-family: var(--mono);
+      font-size: .85em;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: .1em .35em;
+      color: var(--red);
+    }
+    pre {
+      font-family: var(--mono);
+      font-size: .83em;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 1rem 1.25rem;
+      overflow-x: auto;
+      margin: .75rem 0 1.25rem;
+      line-height: 1.55;
+      color: var(--text);
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      color: inherit;
+      font-size: 1em;
+    }
+
+    /* ── Blockquote / epigraph ────────────────────────────────── */
+    blockquote {
+      border-left: 3px solid var(--red);
+      margin: 1.5rem 0;
+      padding: .75rem 1.25rem;
+      background: var(--surface);
+      border-radius: 0 5px 5px 0;
+      color: var(--muted);
+      font-style: italic;
+    }
+    blockquote cite {
+      display: block;
+      margin-top: .5rem;
+      font-size: .85em;
+      font-style: normal;
+      color: var(--gold);
+    }
+
+    /* ── Tables ───────────────────────────────────────────────── */
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 1rem 0 1.5rem;
+      font-size: .9em;
+    }
+    th {
+      text-align: left;
+      background: var(--code-bg);
+      padding: .5rem .75rem;
+      border: 1px solid var(--border);
+      font-weight: 700;
+      font-size: .82em;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: var(--muted);
+    }
+    td {
+      padding: .5rem .75rem;
+      border: 1px solid var(--border);
+      vertical-align: top;
+    }
+    tr:nth-child(even) td { background: var(--surface); }
+
+    /* ── Pills / badges ───────────────────────────────────────── */
+    .pill {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: .75em;
+      font-weight: 600;
+      padding: .15em .5em;
+      border-radius: 3px;
+      margin: .1em .15em;
+    }
+    .pill-red   { background: #F5DCDC; color: var(--red); }
+    .pill-blue  { background: #DCE6F5; color: var(--blue); }
+    .pill-gold  { background: #F5EDDC; color: var(--gold); }
+    .pill-black { background: #E0DDD8; color: var(--text); }
+
+    /* ── Callout boxes ────────────────────────────────────────── */
+    .callout {
+      border-radius: 5px;
+      padding: .85rem 1.1rem;
+      margin: 1rem 0;
+      font-size: .92em;
+    }
+    .callout-note { background: #EDF2FB; border-left: 3px solid var(--blue); }
+    .callout-warn { background: #FBF3ED; border-left: 3px solid #B05A00; }
+
+    /* ── API entries ──────────────────────────────────────────── */
+    .api-entry {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.25rem 1.5rem;
+      margin: 1.25rem 0;
+    }
+    .api-sig {
+      font-family: var(--mono);
+      font-size: .9em;
+      color: var(--blue);
+      font-weight: 700;
+      margin-bottom: .75rem;
+    }
+    .api-returns {
+      font-size: .88em;
+      color: var(--muted);
+      margin-top: .5rem;
+    }
+
+    /* ── Header hero ──────────────────────────────────────────── */
+    .hero {
+      padding: 2rem 0 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .hero .tagline {
+      font-size: 1.1rem;
+      color: var(--muted);
+      margin-top: .4rem;
+    }
+    .hero .version {
+      font-family: var(--mono);
+      font-size: .8em;
+      color: var(--muted);
+      margin-top: .6rem;
+    }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    footer {
+      margin-top: 4rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: .82em;
+      color: var(--muted);
+    }
+
+    /* ── Responsive ───────────────────────────────────────────── */
+    @media (max-width: 700px) {
+      body { flex-direction: column; }
+      nav { width: 100%; min-height: auto; position: static; }
+      main { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SIDEBAR NAVIGATION
+     ═══════════════════════════════════════════════════════════════ -->
+<nav>
+  <a class="logo" href="#top">monsieur-piscinette</a>
+
+  <p class="section-label">Overview</p>
+  <ul>
+    <li><a href="#overview">What is it?</a></li>
+    <li><a href="#lore">The characters</a></li>
+    <li><a href="#requirements">Requirements</a></li>
+  </ul>
+
+  <p class="section-label">Getting started</p>
+  <ul>
+    <li><a href="#installation">Installation</a></li>
+    <li><a href="#configuration">Configuration</a></li>
+  </ul>
+
+  <p class="section-label">Hooks</p>
+  <ul>
+    <li><a href="#hook-norminette">norminette</a></li>
+    <li><a href="#hook-compiler">c-compiler</a></li>
+    <li><a href="#hook-forbidden">forbidden-functions</a></li>
+    <li><a href="#hook-commit">commit-message</a></li>
+  </ul>
+
+  <p class="section-label">Commit format</p>
+  <ul>
+    <li><a href="#cc-format">Conventional Commits</a></li>
+    <li><a href="#cc-types">Type reference</a></li>
+    <li><a href="#cc-gamification">Gamification</a></li>
+  </ul>
+
+  <p class="section-label">CLI reference</p>
+  <ul>
+    <li><a href="#cli-norminette">norminette</a></li>
+    <li><a href="#cli-compiler">compiler</a></li>
+    <li><a href="#cli-forbidden">forbidden</a></li>
+    <li><a href="#cli-commit-msg">commit-msg</a></li>
+  </ul>
+
+  <p class="section-label">API reference</p>
+  <ul>
+    <li><a href="#api-config">config</a></li>
+    <li><a href="#api-norminette">checks.norminette</a></li>
+    <li><a href="#api-compiler">checks.compiler</a></li>
+    <li><a href="#api-forbidden">checks.forbidden</a></li>
+    <li><a href="#api-commit-msg">checks.commit_msg</a></li>
+  </ul>
+
+  <p class="section-label">Development</p>
+  <ul>
+    <li><a href="#dev-setup">Setup</a></li>
+    <li><a href="#dev-quality">Quality gates</a></li>
+    <li><a href="#dev-layout">Project layout</a></li>
+    <li><a href="#dev-contribute">Contributing</a></li>
+  </ul>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     MAIN CONTENT
+     ═══════════════════════════════════════════════════════════════ -->
+<main id="top">
+
+  <!-- ── Hero ─────────────────────────────────────────────────── -->
+  <div class="hero">
+    <h1>Monsieur Piscinette</h1>
+    <p class="tagline">
+      Pre-commit hooks for the 42 school piscine —
+      norminette, compiler, forbidden functions, commit format.
+    </p>
+    <p class="version">v0.1.0 · Python 3.11+ · MIT</p>
+  </div>
+
+  <!-- ── Overview ─────────────────────────────────────────────── -->
+  <section id="overview">
+    <h2>What is it?</h2>
+
+    <p>
+      Monsieur Piscinette is a suite of four
+      <a href="https://pre-commit.com">pre-commit</a> hooks that run
+      automatically before every <code>git commit</code> in a 42 piscine
+      repository. The hooks catch norm violations, compile errors, forbidden
+      function calls, and malformed commit messages <em>before</em> they
+      reach the repository — so moulinette never has to see them first.
+    </p>
+
+    <table>
+      <tr>
+        <th>Hook id</th>
+        <th>What it checks</th>
+        <th>Tool</th>
+      </tr>
+      <tr>
+        <td><code>norminette</code></td>
+        <td>42 Norme compliance on <code>.c</code> and <code>.h</code> files</td>
+        <td><code>norminette</code> CLI</td>
+      </tr>
+      <tr>
+        <td><code>c-compiler</code></td>
+        <td>Syntax errors in staged <code>.c</code> files</td>
+        <td><code>gcc -fsyntax-only</code></td>
+      </tr>
+      <tr>
+        <td><code>forbidden-functions</code></td>
+        <td>Calls to functions banned by the subject PDF</td>
+        <td>Pure-Python regex</td>
+      </tr>
+      <tr>
+        <td><code>commit-message</code></td>
+        <td>Commit subject format (Conventional Commits 1.0.0)</td>
+        <td>Pure-Python regex</td>
+      </tr>
+    </table>
+  </section>
+
+  <!-- ── Lore ─────────────────────────────────────────────────── -->
+  <section id="lore">
+    <h2>The characters</h2>
+
+    <blockquote>
+      Bonjour, monde. Monsieur Piscinette.<br>
+      I am not here to be gentle.<br>
+      I am here so moulinette does not have to be harsh.
+      <cite>— Monsieur Ganesha, Directeur,
+        <a href="https://42.fr">Conservatoire de Paris XLII</a></cite>
+    </blockquote>
+
+    <p>
+      Monsieur Piscinette operates under the dual authority of
+      <strong>Monsieur Ganesha</strong>, wise director of the
+      Conservatoire de Paris XLII, and the beautiful — and terrible —
+      <strong>Mademoiselle Norminette</strong>, who likes everything
+      with potatoes.
+    </p>
+    <p>
+      The rigor is the care. The demand is the protection.
+      Moulinette has no mercy; Mademoiselle Norminette, even less —
+      but Ganesha at least has a reason.
+    </p>
+
+    <div class="callout callout-warn">
+      <strong>A warning.</strong> When you and Mademoiselle Norminette
+      fall in love — when your code is clean, your norm is perfect, and
+      she begins to look at you the way she looks at a file with no errors
+      — Moulinette notices. She always notices. <em>C'est terrible.</em>
+      Have a good session. Close the door behind you.
+      <br><small style="color:var(--muted)">— Monsieur Ganesha, in confidence</small>
+    </div>
+  </section>
+
+  <!-- ── Requirements ─────────────────────────────────────────── -->
+  <section id="requirements">
+    <h2>Requirements</h2>
+    <ul>
+      <li><strong>Python 3.11+</strong> (uses <code>tomllib</code> from stdlib)</li>
+      <li><strong>pre-commit ≥ 3.0</strong></li>
+      <li><strong>norminette</strong> — for the <code>norminette</code> hook:
+        <code>pip install norminette</code></li>
+      <li><strong>gcc</strong> — for the <code>c-compiler</code> hook:
+        <code>sudo apt install gcc</code></li>
+    </ul>
+  </section>
+
+  <!-- ── Installation ─────────────────────────────────────────── -->
+  <section id="installation">
+    <h2>Installation</h2>
+
+    <h3>Automatic (recommended)</h3>
+    <p>Run the setup script from inside your piscine repository:</p>
+    <pre><code>bash /path/to/monsieur-piscinette/install.sh</code></pre>
+    <p>The script:</p>
+    <ol>
+      <li>Sets <code>git config --global core.editor vim</code></li>
+      <li>Installs <code>pre-commit</code> via <code>uv</code> or <code>pip3</code></li>
+      <li>Creates <code>.pre-commit-config.yaml</code> pointing to this repository</li>
+      <li>Creates a <code>.piscinette.toml</code> template with sensible defaults</li>
+      <li>Activates the hooks with <code>pre-commit install</code></li>
+    </ol>
+
+    <h3>Manual</h3>
+    <p>Add the following to your <code>.pre-commit-config.yaml</code>:</p>
+    <pre><code>repos:
+  - repo: https://github.com/qlrd/monsieur-piscinette
+    rev: v0.1.0
+    hooks:
+      - id: norminette
+      - id: c-compiler
+      - id: forbidden-functions
+      - id: commit-message</code></pre>
+
+    <p>Then activate the hooks:</p>
+    <pre><code>pre-commit install
+pre-commit install --hook-type commit-msg</code></pre>
+
+    <div class="callout callout-note">
+      <strong>Editor.</strong> The commit-message hook opens the editor when
+      <code>git commit</code> is called without <code>-m</code>.
+      <code>vim</code> is the expected editor at 42 school.
+      Run <code>git config --global core.editor vim</code> to set it.
+    </div>
+  </section>
+
+  <!-- ── Configuration ────────────────────────────────────────── -->
+  <section id="configuration">
+    <h2>Configuration</h2>
+
+    <p>
+      Place <code>.piscinette.toml</code> at the root of your piscine
+      repository. All sections are optional; the hooks work without a
+      configuration file.
+    </p>
+
+    <pre><code>[project]
+# Identifier for the current module (informational only).
+name = "C00"
+
+[forbidden]
+# Functions disallowed by the subject PDF.
+# The hook rejects any .c file that calls one of these.
+functions = ["printf", "malloc", "realloc", "free", "calloc"]
+
+[commit]
+# Override the default Conventional Commits 1.0.0 pattern.
+# Uncomment to use the 42-school ex00: format instead.
+# pattern = "^(ex|rush|exam)\\d+: .+"</code></pre>
+
+    <h4>Configuration reference</h4>
+    <table>
+      <tr>
+        <th>Key</th><th>Type</th><th>Default</th><th>Description</th>
+      </tr>
+      <tr>
+        <td><code>[project] name</code></td>
+        <td>string</td>
+        <td><em>none</em></td>
+        <td>Module identifier. Informational only.</td>
+      </tr>
+      <tr>
+        <td><code>[forbidden] functions</code></td>
+        <td>string[]</td>
+        <td><code>[]</code></td>
+        <td>C function names to forbid. Empty = hook always passes.</td>
+      </tr>
+      <tr>
+        <td><code>[commit] pattern</code></td>
+        <td>string (regex)</td>
+        <td>CC 1.0.0 pattern</td>
+        <td>Custom regex for the commit subject. Disables gamification.</td>
+      </tr>
+    </table>
+  </section>
+
+  <!-- ── Hooks ─────────────────────────────────────────────────── -->
+  <h2 id="hooks" style="margin-top:3rem">Hooks</h2>
+
+  <section id="hook-norminette">
+    <h3>norminette</h3>
+    <p>
+      Runs the <code>norminette</code> CLI on every staged
+      <code>.c</code> and <code>.h</code> file. Norminette enforces the
+      <a href="https://github.com/42School/norminette">42 Norme</a> —
+      a strict coding standard covering indentation, line length,
+      function length, variable placement, and more.
+    </p>
+    <pre><code># .pre-commit-config.yaml
+- id: norminette</code></pre>
+    <p>
+      If norminette is not installed the hook prints an installation hint
+      and exits with code&nbsp;1. Install with:
+      <code>pip install norminette</code>
+    </p>
+  </section>
+
+  <section id="hook-compiler">
+    <h3>c-compiler</h3>
+    <p>
+      Runs <code>gcc -Wall -Wextra -Werror -fsyntax-only</code> on each
+      staged <code>.c</code> file independently. The
+      <code>-fsyntax-only</code> flag skips object-file generation,
+      which avoids conflicts when multiple files are staged and some
+      headers are not yet available.
+    </p>
+    <pre><code># .pre-commit-config.yaml
+- id: c-compiler</code></pre>
+  </section>
+
+  <section id="hook-forbidden">
+    <h3>forbidden-functions</h3>
+    <p>
+      Scans every staged <code>.c</code> file for calls to functions
+      listed in <code>[forbidden] functions</code>.
+      Detection is word-boundary anchored:
+      <code>ft_printf</code> is <strong>not</strong> flagged when
+      <code>printf</code> is forbidden.
+    </p>
+    <pre><code># .pre-commit-config.yaml
+- id: forbidden-functions</code></pre>
+    <p>Error output format:</p>
+    <pre><code>ex00/ft_putchar.c:8: função proibida 'write'</code></pre>
+    <div class="callout callout-note">
+      Single-line comments (<code>// …</code>) are stripped before
+      scanning. Multi-line <code>/* */</code> comments are not stripped
+      — known limitation.
+    </div>
+  </section>
+
+  <section id="hook-commit">
+    <h3>commit-message</h3>
+    <p>
+      Validates the commit message subject against
+      <a href="https://www.conventionalcommits.org/">Conventional Commits
+      1.0.0</a>. Git passes <code>.git/COMMIT_EDITMSG</code> to the hook;
+      comment lines (starting with <code>#</code>) are stripped before
+      validation.
+    </p>
+    <pre><code># .pre-commit-config.yaml
+- id: commit-message</code></pre>
+    <p>
+      Rejection output is intentionally terse — <code>REJECTED.</code> —
+      with no format hints. Students are expected to discover the correct
+      format themselves.
+    </p>
+  </section>
+
+  <!-- ── Commit format ─────────────────────────────────────────── -->
+  <section id="cc-format">
+    <h2>Conventional Commits 1.0.0</h2>
+
+    <p>The commit subject must follow the pattern:</p>
+    <pre><code>&lt;type&gt;[(&lt;scope&gt;)][!]: &lt;description&gt;</code></pre>
+
+    <ul>
+      <li><strong>type</strong> — one of the allowed types (see below)</li>
+      <li><strong>scope</strong> — optional, parenthesised, e.g. <code>(cli)</code></li>
+      <li><strong>!</strong> — optional breaking-change marker</li>
+      <li><strong>description</strong> — must start with a non-whitespace character</li>
+    </ul>
+
+    <p>The subject line must not exceed <strong>72 characters</strong>.</p>
+
+    <h4>Valid examples</h4>
+    <pre><code>feat: add norminette timeout option
+fix(forbidden): handle empty file list
+feat!: drop support for gcc older than 12
+fix(compiler)!: change exit code on parse error
+docs: update installation section
+test: add integration test for commit-msg
+init: project setup</code></pre>
+
+    <h4>Invalid examples</h4>
+    <pre><code>WIP                          # no type prefix
+ex00: implement ft_putchar   # 42-school format, not CC 1.0.0
+FEAT: something              # type must be lowercase
+feat:                        # missing description
+feat: &lt;73 chars...&gt;          # subject too long</code></pre>
+  </section>
+
+  <section id="cc-types">
+    <h3>Type reference</h3>
+    <table>
+      <tr><th>Type</th><th>When to use</th><th>Gamification</th></tr>
+      <tr>
+        <td><span class="pill pill-red">feat</span></td>
+        <td>A new feature</td><td>—</td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-red">fix</span></td>
+        <td>A bug fix</td><td>—</td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-blue">docs</span></td>
+        <td>Documentation only</td>
+        <td>francinette approves</td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-black">style</span></td>
+        <td>Formatting, whitespace — no logic change</td><td>—</td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-black">refactor</span></td>
+        <td>Code restructuring — no feature, no fix</td><td>—</td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-black">perf</span></td>
+        <td>Performance improvement</td><td>—</td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-gold">test</span></td>
+        <td>Adding or correcting tests</td>
+        <td>ultimate type easter egg</td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-black">build</span></td>
+        <td>Build system, dependencies</td><td>—</td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-black">ci</span></td>
+        <td>CI/CD configuration</td><td>—</td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-blue">chore</span></td>
+        <td>Maintenance tasks — no production code change</td>
+        <td>francinette approves</td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-black">revert</span></td>
+        <td>Reverts a previous commit</td><td>—</td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-gold">init</span></td>
+        <td>Initial commit / project bootstrap</td><td>—</td>
+      </tr>
+    </table>
+  </section>
+
+  <section id="cc-gamification">
+    <h3>Gamification layer</h3>
+    <p>
+      When the default Conventional Commits pattern is active, accepted
+      commits trigger informational messages on <em>stderr</em>:
+    </p>
+    <table>
+      <tr><th>Condition</th><th>Message</th></tr>
+      <tr>
+        <td><code>docs</code> or <code>chore</code> commit</td>
+        <td><code>francinette approves this docs commit.</code></td>
+      </tr>
+      <tr>
+        <td><code>test</code> commit</td>
+        <td><code>you discovered the ultimate commit type.</code></td>
+      </tr>
+      <tr>
+        <td>Breaking change (<code>!</code>) with body</td>
+        <td><code>breaking change explained — +XP.</code></td>
+      </tr>
+      <tr>
+        <td>Breaking change (<code>!</code>) without body</td>
+        <td><code>tip: explain why this breaks to earn +XP.</code></td>
+      </tr>
+    </table>
+    <p>
+      These messages are purely informational. They do
+      <strong>not</strong> affect the hook exit code and are not shown
+      when a custom pattern is configured.
+    </p>
+  </section>
+
+  <!-- ── CLI reference ─────────────────────────────────────────── -->
+  <h2 id="cli" style="margin-top:3rem">CLI reference</h2>
+  <p>
+    After installation with <code>uv sync</code> or
+    <code>pip install -e .</code> the <code>piscinette</code> command
+    is available on <code>$PATH</code>. Each subcommand mirrors a hook.
+    Exit code is <code>0</code> on success, <code>1</code> on failure,
+    <code>2</code> on internal error.
+  </p>
+
+  <section id="cli-norminette">
+    <h3><code>piscinette norminette &lt;files...&gt;</code></h3>
+    <p>Run norminette on the given files.</p>
+    <pre><code>piscinette norminette ex00/ft_putchar.c include/header.h</code></pre>
+  </section>
+
+  <section id="cli-compiler">
+    <h3><code>piscinette compiler &lt;files...&gt;</code></h3>
+    <p>Syntax-check the given files with gcc.</p>
+    <pre><code>piscinette compiler ex00/ft_putchar.c ex01/ft_print_alphabet.c</code></pre>
+  </section>
+
+  <section id="cli-forbidden">
+    <h3><code>piscinette forbidden &lt;files...&gt;</code></h3>
+    <p>
+      Scan the given files for forbidden function calls.
+      Reads <code>[forbidden] functions</code> from
+      <code>.piscinette.toml</code> in the current directory.
+    </p>
+    <pre><code>piscinette forbidden ex00/ft_putchar.c</code></pre>
+  </section>
+
+  <section id="cli-commit-msg">
+    <h3><code>piscinette commit-msg &lt;file&gt;</code></h3>
+    <p>
+      Validate the commit message stored in <em>file</em>.
+      Reads the optional custom pattern from
+      <code>[commit] pattern</code> in <code>.piscinette.toml</code>.
+    </p>
+    <pre><code>piscinette commit-msg .git/COMMIT_EDITMSG</code></pre>
+  </section>
+
+  <!-- ── API reference ─────────────────────────────────────────── -->
+  <h2 id="api" style="margin-top:3rem">API reference</h2>
+  <p>
+    All public functions can be imported and called directly, which is
+    useful for testing or for embedding Monsieur Piscinette checks into
+    other tools.
+  </p>
+
+  <!-- config -->
+  <section id="api-config">
+    <h3>piscinette.config</h3>
+
+    <div class="api-entry">
+      <p class="api-sig">load_config(root: Path | None = None) → Config</p>
+      <p>
+        Load <code>.piscinette.toml</code> from <em>root</em> (defaults to
+        the current working directory). Returns a default
+        <code>Config</code> if the file does not exist. Raises
+        <code>ValueError</code> if the file exists but contains invalid
+        TOML.
+      </p>
+      <p class="api-returns">
+        Returns: <code>Config</code> — fully-populated configuration
+        dataclass with safe defaults.
+      </p>
+      <pre><code>from piscinette.config import load_config
+
+cfg = load_config()
+print(cfg.forbidden.functions)  # ['printf', 'malloc']
+print(cfg.commit.pattern)       # None  (use default CC 1.0.0)</code></pre>
+    </div>
+
+    <h4>Dataclasses</h4>
+    <table>
+      <tr><th>Class</th><th>Fields</th><th>Defaults</th></tr>
+      <tr>
+        <td><code>Config</code></td>
+        <td><code>project</code>, <code>forbidden</code>, <code>commit</code></td>
+        <td>nested defaults</td>
+      </tr>
+      <tr>
+        <td><code>ProjectConfig</code></td>
+        <td><code>name: str | None</code></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>ForbiddenConfig</code></td>
+        <td><code>functions: list[str]</code></td>
+        <td><code>[]</code></td>
+      </tr>
+      <tr>
+        <td><code>CommitConfig</code></td>
+        <td><code>pattern: str | None</code></td>
+        <td><code>None</code></td>
+      </tr>
+    </table>
+  </section>
+
+  <!-- norminette -->
+  <section id="api-norminette">
+    <h3>piscinette.checks.norminette</h3>
+    <div class="api-entry">
+      <p class="api-sig">check(files: Sequence[str]) → bool</p>
+      <p>
+        Run <code>norminette</code> on all <code>.c</code> and
+        <code>.h</code> files in <em>files</em>. Non-matching files are
+        ignored. Returns <code>True</code> if norminette exits with
+        code&nbsp;0, <code>False</code> otherwise. Returns
+        <code>True</code> immediately if no matching files are present.
+      </p>
+      <pre><code>from piscinette.checks.norminette import check
+ok = check(["ex00/ft_putchar.c", "include/libft.h"])</code></pre>
+    </div>
+  </section>
+
+  <!-- compiler -->
+  <section id="api-compiler">
+    <h3>piscinette.checks.compiler</h3>
+    <div class="api-entry">
+      <p class="api-sig">check(files: Sequence[str]) → bool</p>
+      <p>
+        Run <code>gcc -Wall -Wextra -Werror -fsyntax-only</code> on each
+        <code>.c</code> file in <em>files</em> (one subprocess per file).
+        All failures are collected before returning. Returns
+        <code>False</code> if gcc is not installed.
+      </p>
+      <pre><code>from piscinette.checks.compiler import check
+ok = check(["ex00/ft_putchar.c", "ex01/ft_print_alphabet.c"])</code></pre>
+    </div>
+  </section>
+
+  <!-- forbidden -->
+  <section id="api-forbidden">
+    <h3>piscinette.checks.forbidden</h3>
+    <div class="api-entry">
+      <p class="api-sig">
+        check(files: Sequence[str], forbidden: Sequence[str]) → bool
+      </p>
+      <p>
+        Scan <code>.c</code> files for calls to any function in
+        <em>forbidden</em>. Uses the regex
+        <code>\b(f1|f2|...)\s*\(</code> so that
+        <code>ft_printf</code> is not flagged when <code>printf</code>
+        is forbidden. Returns <code>True</code> if <em>forbidden</em>
+        is empty.
+      </p>
+      <pre><code>from piscinette.checks.forbidden import check
+ok = check(["ex00/ft_putchar.c"], ["printf", "malloc"])</code></pre>
+    </div>
+  </section>
+
+  <!-- commit_msg -->
+  <section id="api-commit-msg">
+    <h3>piscinette.checks.commit_msg</h3>
+
+    <h4>Constants</h4>
+    <table>
+      <tr>
+        <td><code>DEFAULT_PATTERN</code></td>
+        <td>Conventional Commits 1.0.0 regex string</td>
+      </tr>
+      <tr>
+        <td><code>MAX_SUBJECT_LEN</code></td>
+        <td><code>72</code> — maximum subject line length in characters</td>
+      </tr>
+    </table>
+
+    <div class="api-entry">
+      <p class="api-sig">
+        check(file_path: str, pattern: str = DEFAULT_PATTERN) → bool
+      </p>
+      <p>
+        Validate the commit message at <em>file_path</em>.
+        Strips <code>#</code> comment lines, checks subject length, then
+        matches against <em>pattern</em>. When using
+        <code>DEFAULT_PATTERN</code> the gamification layer is active.
+        All rejection output goes to <em>stderr</em>; nothing is raised.
+      </p>
+      <pre><code>from piscinette.checks.commit_msg import check, DEFAULT_PATTERN
+
+ok = check(".git/COMMIT_EDITMSG")
+# or with a custom pattern:
+ok = check(path, pattern=r"^(ex|rush|exam)\d+: .+")</code></pre>
+    </div>
+  </section>
+
+  <!-- ── Development ───────────────────────────────────────────── -->
+  <section id="dev-setup">
+    <h2>Development</h2>
+
+    <h3>Setup</h3>
+    <p>
+      Python 3.11+ and
+      <a href="https://docs.astral.sh/uv">uv</a> are required.
+    </p>
+    <pre><code>git clone https://github.com/qlrd/monsieur-piscinette
+cd monsieur-piscinette
+uv sync --dev</code></pre>
+  </section>
+
+  <section id="dev-quality">
+    <h3>Quality gates</h3>
+    <p>All of the following must pass before committing:</p>
+    <pre><code>black --check src/ tests/        # formatting (88-column)
+isort --check-only src/ tests/   # import order
+pylint src/piscinette/           # lint — 10.00/10 required
+pytest                           # all 45 tests must pass</code></pre>
+
+    <p>To auto-fix formatting before checking:</p>
+    <pre><code>black src/ tests/
+isort src/ tests/</code></pre>
+  </section>
+
+  <section id="dev-layout">
+    <h3>Project layout</h3>
+    <pre><code>src/piscinette/
+├── __init__.py        public API (re-exports checks + config)
+├── __main__.py        python -m piscinette entry point
+├── cli.py             CLI entry point (argparse)
+├── config.py          .piscinette.toml loader (tomllib)
+└── checks/
+    ├── __init__.py
+    ├── norminette.py  subprocess: norminette
+    ├── compiler.py    subprocess: gcc -fsyntax-only
+    ├── forbidden.py   pure-Python regex scan
+    └── commit_msg.py  CC 1.0.0 validator + gamification
+
+tests/
+├── fixtures/          valid.c · norm_error.c · compile_error.c · forbidden.c
+├── test_forbidden.py  integration via lib API + tmp_path
+├── test_commit_msg.py integration via lib API + tmp_path
+└── test_cli.py        CLI integration via subprocess</code></pre>
+  </section>
+
+  <section id="dev-contribute">
+    <h3>Contributing</h3>
+    <p>
+      All contributions require a
+      <a href="https://developercertificate.org/">Developer Certificate of
+      Origin</a>. Add it with <code>git commit -s</code>.
+    </p>
+    <p>Commit messages must follow Conventional Commits 1.0.0.</p>
+    <p>
+      For large changes, open an issue before starting work.
+      See <a href="https://github.com/qlrd/monsieur-piscinette/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a>
+      for the full workflow.
+    </p>
+
+    <h4>Adding a new check</h4>
+    <ol>
+      <li>Create <code>src/piscinette/checks/&lt;name&gt;.py</code>
+        with a public <code>check()</code> function and verbose
+        docstrings.</li>
+      <li>Export it in <code>checks/__init__.py</code>.</li>
+      <li>Add a CLI subcommand in <code>cli.py</code>.</li>
+      <li>Add an entry in <code>.pre-commit-hooks.yaml</code>.</li>
+      <li>Write integration tests in
+        <code>tests/test_&lt;name&gt;.py</code>.</li>
+      <li>Run all quality gates and open a pull request.</li>
+    </ol>
+  </section>
+
+  <!-- ── Footer ───────────────────────────────────────────────── -->
+  <footer>
+    <p>
+      <strong>Monsieur Piscinette</strong> v0.1.0 ·
+      <a href="https://github.com/qlrd/monsieur-piscinette">GitHub</a> ·
+      MIT License ·
+      Related:
+      <a href="https://github.com/xicodomingues/francinette">Francinette</a> ·
+      <a href="https://github.com/42School/norminette">Norminette</a>
+    </p>
+    <p style="margin-top:.5rem; color:var(--muted)">
+      Conservatoire de Paris XLII ·
+      <em>"The rigor is the care. The demand is the protection."</em>
+    </p>
+  </footer>
+
+</main>
+</body>
+</html>
