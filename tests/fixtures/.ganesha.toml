@@ -1,0 +1,2 @@
+[forbidden]
+functions = ["printf", "malloc", "free"]
