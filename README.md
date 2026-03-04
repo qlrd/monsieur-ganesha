@@ -433,11 +433,14 @@ git reset --hard HEAD@{n}         # recover the exact state
 
 Never modify the reflog. Never use `git push --force` to overwrite
 a shared branch — it discards commits that your teammates may have
-pulled. If you have rebased correctly and the reflog proves it,
-`git push --force-with-lease` is the safer alternative: it refuses
-to push if the remote has commits you have not seen, protecting
-against accidental overwrites. The reflog on your machine is yours —
-and it is the only honest witness you have.
+pulled. If you have rebased correctly and the reflog proves it on
+*your own* branch (for example, a feature or PR branch) and you have
+first run `git fetch`, `git push --force-with-lease` is the safer
+alternative: it refuses to push if the remote has commits you have
+not seen, protecting against some accidental overwrites. Shared
+branches (like `main`) should still not have their history rewritten
+without explicit coordination with your team. The reflog on your
+machine is yours — and it is the only honest witness you have.
 
 ---
 
