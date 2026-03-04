@@ -66,7 +66,7 @@ Checks run before every `git commit`:
 ## Self-evaluation before you push
 
 Moulinette evaluates your code once and remembers.
-Monsieur Piscinette evaluates it as many times as you need,
+Monsieur Ganesha evaluates it as many times as you need,
 silently, before Moulinette ever sees it.
 
 Every time you run `git commit`, the hooks fire automatically:
@@ -98,7 +98,7 @@ python -m ganesha forbidden   src/*.c
 python -m ganesha commit-msg  .git/COMMIT_EDITMSG
 ```
 
-Exit codes: `0` pass · `1` check failed · `2` tool not found.
+Exit codes: `0` pass · `1` check failed · `2` internal error.
 
 ---
 
@@ -106,7 +106,7 @@ Exit codes: `0` pass · `1` check failed · `2` tool not found.
 
 For students who have already mastered the basics, or who want to
 simulate a real evaluation session before submitting, Monsieur
-Piscinette can apply the same constraints as Moulinette.
+Ganesha can apply the same constraints as Moulinette.
 
 Create `.ganesha.toml` at the root of your piscine repository:
 
@@ -530,7 +530,7 @@ and install the package via `language: python`.
 ### Project layout
 
 ```
-src/piscinette/
+src/ganesha/
   __init__.py       public API (re-exports checks + config)
   cli.py            thin CLI wrapper using argparse
   config.py         reads .ganesha.toml (tomllib — stdlib)

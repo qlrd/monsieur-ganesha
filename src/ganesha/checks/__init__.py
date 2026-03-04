@@ -3,7 +3,7 @@
 This package exposes the four pre-commit check modules as a flat
 namespace so that the CLI and tests can import them uniformly::
 
-    from piscinette import checks
+    from ganesha import checks
 
     checks.norminette.check(files)
     checks.compiler.check(files)

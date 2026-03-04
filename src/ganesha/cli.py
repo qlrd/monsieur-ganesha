@@ -60,7 +60,7 @@ def main() -> None:
     entry point in ``pyproject.toml``::
 
         [project.scripts]
-        piscinette = "ganesha.cli:main"
+        ganesha = "ganesha.cli:main"
 
     It is also called when the package is run as a module::
 

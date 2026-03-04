@@ -1,7 +1,7 @@
 """Entry point for ``python -m ganesha``.
 
 Allows the package to be invoked directly with the Python interpreter
-without requiring the ``piscinette`` console script to be installed::
+without requiring the ``ganesha`` console script to be installed::
 
     python -m ganesha norminette file.c
     python -m ganesha compiler    file.c

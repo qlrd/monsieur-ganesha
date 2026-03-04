@@ -1,4 +1,4 @@
-"""CLI integration tests for piscinette."""
+"""CLI integration tests for ganesha."""
 
 import subprocess
 import sys

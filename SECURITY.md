@@ -17,7 +17,7 @@ Older versions are not patched. Upgrade to the latest release.
 Use GitHub's private vulnerability reporting:
 
 ```
-https://github.com/qlrd/monsieur-piscinette/security/advisories/new
+https://github.com/qlrd/monsieur-ganesha/security/advisories/new
 ```
 
 Include in your report:
@@ -35,7 +35,7 @@ in the release notes unless you prefer anonymity.
 
 ## Integrity
 
-monsieur-piscinette runs on every commit.
+monsieur-ganesha runs on every commit.
 
 It sees everything.
 

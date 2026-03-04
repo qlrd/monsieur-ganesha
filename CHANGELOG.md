@@ -21,26 +21,27 @@ project adheres to [Semantic Versioning][semver].
   `gcc -Wall -Wextra -Werror -fsyntax-only`. Files are compiled
   individually so all errors are reported before the hook exits.
 - `forbidden-functions` hook: scans staged `.c` files for calls to
-  functions listed in `.piscinette.toml` using word-boundary regex.
+  functions listed in `.ganesha.toml` using word-boundary regex.
   `ft_printf` is not flagged when `printf` is forbidden.
   Single-line `//` comments are stripped before scanning.
 - `commit-message` hook: validates the first meaningful line of the
   commit message against a configurable regex pattern. Git comment
   lines (starting with `#`) are stripped automatically.
-  Default pattern: `^(ex|rush|exam)\d+: .+`
-- `.piscinette.toml` configuration file: per-module forbidden
+  Default pattern: Conventional Commits 1.0.0
+  (`^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert|init)(\([^)]+\))?(!)?: \S.*`).
+- `.ganesha.toml` configuration file: per-module forbidden
   function list and custom commit message pattern.
 - `install.sh`: setup script that installs dependencies, creates
-  `.pre-commit-config.yaml` and `.piscinette.toml` templates, and
+  `.pre-commit-config.yaml` and `.ganesha.toml` templates, and
   activates the hooks in the target repository.
-- Mascot SVG (`mascot.svg`): Monsieur Piscinette, drawn in a Roger
+- Mascot SVG (`mascot.svg`): Monsieur Ganesha, drawn in a Roger
   Rabbit adult cartoon style.
 - Full test suite: 58 tests covering unit, integration, and CLI
   behaviour via `assert_cmd`.
 
 ---
 
-[Unreleased]: https://github.com/qlrd/monsieur-piscinette/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/qlrd/monsieur-piscinette/releases/tag/v0.1.0
+[Unreleased]: https://github.com/qlrd/monsieur-ganesha/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/qlrd/monsieur-ganesha/releases/tag/v0.1.0
 [keepachangelog]: https://keepachangelog.com/en/1.1.0/
 [semver]: https://semver.org/spec/v2.0.0.html
