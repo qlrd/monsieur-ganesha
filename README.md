@@ -131,7 +131,7 @@ everything passes. If it passes here, it will pass Moulinette.
 
 ```bash
 bash <(curl -fsSL \
-  https://raw.githubusercontent.com/YOUR_USER/monsieur-ganesha/main/install.sh)
+  https://raw.githubusercontent.com/qlrd/monsieur-ganesha/main/install.sh)
 ```
 
 The script installs `pre-commit`, configures the hooks for the
@@ -143,7 +143,7 @@ Add this to your project's `.pre-commit-config.yaml`:
 
 ```yaml
 repos:
-  - repo: https://github.com/YOUR_USER/monsieur-ganesha
+  - repo: https://github.com/qlrd/monsieur-ganesha
     rev: v0.1.0
     hooks:
       - id: norminette

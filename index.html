@@ -282,7 +282,7 @@
      SIDEBAR NAVIGATION
      ═══════════════════════════════════════════════════════════════ -->
 <nav>
-  <a class="logo" href="#top">monsieur-piscinette</a>
+  <a class="logo" href="#top">monsieur-ganesha</a>
 
   <p class="section-label">Overview</p>
   <ul>
@@ -449,20 +449,20 @@
 
     <h3>Automatic (recommended)</h3>
     <p>Run the setup script from inside your piscine repository:</p>
-    <pre><code>bash /path/to/monsieur-piscinette/install.sh</code></pre>
+    <pre><code>bash /path/to/monsieur-ganesha/install.sh</code></pre>
     <p>The script:</p>
     <ol>
       <li>Sets <code>git config --global core.editor vim</code></li>
       <li>Installs <code>pre-commit</code> via <code>uv</code> or <code>pip3</code></li>
       <li>Creates <code>.pre-commit-config.yaml</code> pointing to this repository</li>
-      <li>Creates a <code>.piscinette.toml</code> template with sensible defaults</li>
+      <li>Creates a <code>.ganesha.toml</code> template with sensible defaults</li>
       <li>Activates the hooks with <code>pre-commit install</code></li>
     </ol>
 
     <h3>Manual</h3>
     <p>Add the following to your <code>.pre-commit-config.yaml</code>:</p>
     <pre><code>repos:
-  - repo: https://github.com/qlrd/monsieur-piscinette
+  - repo: https://github.com/qlrd/monsieur-ganesha
     rev: v0.1.0
     hooks:
       - id: norminette
@@ -487,7 +487,7 @@ pre-commit install --hook-type commit-msg</code></pre>
     <h2>Configuration</h2>
 
     <p>
-      Place <code>.piscinette.toml</code> at the root of your piscine
+      Place <code>.ganesha.toml</code> at the root of your piscine
       repository. All sections are optional; the hooks work without a
       configuration file.
     </p>
@@ -731,42 +731,42 @@ feat: &lt;73 chars...&gt;          # subject too long</code></pre>
   <h2 id="cli" style="margin-top:3rem">CLI reference</h2>
   <p>
     After installation with <code>uv sync</code> or
-    <code>pip install -e .</code> the <code>piscinette</code> command
+    <code>pip install -e .</code> the <code>ganesha</code> command
     is available on <code>$PATH</code>. Each subcommand mirrors a hook.
     Exit code is <code>0</code> on success, <code>1</code> on failure,
     <code>2</code> on internal error.
   </p>
 
   <section id="cli-norminette">
-    <h3><code>piscinette norminette &lt;files...&gt;</code></h3>
+    <h3><code>ganesha norminette &lt;files...&gt;</code></h3>
     <p>Run norminette on the given files.</p>
-    <pre><code>piscinette norminette ex00/ft_putchar.c include/header.h</code></pre>
+    <pre><code>ganesha norminette ex00/ft_putchar.c include/header.h</code></pre>
   </section>
 
   <section id="cli-compiler">
-    <h3><code>piscinette compiler &lt;files...&gt;</code></h3>
+    <h3><code>ganesha compiler &lt;files...&gt;</code></h3>
     <p>Syntax-check the given files with gcc.</p>
-    <pre><code>piscinette compiler ex00/ft_putchar.c ex01/ft_print_alphabet.c</code></pre>
+    <pre><code>ganesha compiler ex00/ft_putchar.c ex01/ft_print_alphabet.c</code></pre>
   </section>
 
   <section id="cli-forbidden">
-    <h3><code>piscinette forbidden &lt;files...&gt;</code></h3>
+    <h3><code>ganesha forbidden &lt;files...&gt;</code></h3>
     <p>
       Scan the given files for forbidden function calls.
       Reads <code>[forbidden] functions</code> from
-      <code>.piscinette.toml</code> in the current directory.
+      <code>.ganesha.toml</code> in the current directory.
     </p>
-    <pre><code>piscinette forbidden ex00/ft_putchar.c</code></pre>
+    <pre><code>ganesha forbidden ex00/ft_putchar.c</code></pre>
   </section>
 
   <section id="cli-commit-msg">
-    <h3><code>piscinette commit-msg &lt;file&gt;</code></h3>
+    <h3><code>ganesha commit-msg &lt;file&gt;</code></h3>
     <p>
       Validate the commit message stored in <em>file</em>.
       Reads the optional custom pattern from
-      <code>[commit] pattern</code> in <code>.piscinette.toml</code>.
+      <code>[commit] pattern</code> in <code>.ganesha.toml</code>.
     </p>
-    <pre><code>piscinette commit-msg .git/COMMIT_EDITMSG</code></pre>
+    <pre><code>ganesha commit-msg .git/COMMIT_EDITMSG</code></pre>
   </section>
 
   <!-- ── API reference ─────────────────────────────────────────── -->
@@ -779,12 +779,12 @@ feat: &lt;73 chars...&gt;          # subject too long</code></pre>
 
   <!-- config -->
   <section id="api-config">
-    <h3>piscinette.config</h3>
+    <h3>ganesha.config</h3>
 
     <div class="api-entry">
       <p class="api-sig">load_config(root: Path | None = None) → Config</p>
       <p>
-        Load <code>.piscinette.toml</code> from <em>root</em> (defaults to
+        Load <code>.ganesha.toml</code> from <em>root</em> (defaults to
         the current working directory). Returns a default
         <code>Config</code> if the file does not exist. Raises
         <code>ValueError</code> if the file exists but contains invalid
@@ -794,7 +794,7 @@ feat: &lt;73 chars...&gt;          # subject too long</code></pre>
         Returns: <code>Config</code> — fully-populated configuration
         dataclass with safe defaults.
       </p>
-      <pre><code>from piscinette.config import load_config
+      <pre><code>from ganesha.config import load_config
 
 cfg = load_config()
 print(cfg.forbidden.functions)  # ['printf', 'malloc']
@@ -829,7 +829,7 @@ print(cfg.commit.pattern)       # None  (use default CC 1.0.0)</code></pre>
 
   <!-- norminette -->
   <section id="api-norminette">
-    <h3>piscinette.checks.norminette</h3>
+    <h3>ganesha.checks.norminette</h3>
     <div class="api-entry">
       <p class="api-sig">check(files: Sequence[str]) → bool</p>
       <p>
@@ -839,14 +839,14 @@ print(cfg.commit.pattern)       # None  (use default CC 1.0.0)</code></pre>
         code&nbsp;0, <code>False</code> otherwise. Returns
         <code>True</code> immediately if no matching files are present.
       </p>
-      <pre><code>from piscinette.checks.norminette import check
+      <pre><code>from ganesha.checks.norminette import check
 ok = check(["ex00/ft_putchar.c", "include/libft.h"])</code></pre>
     </div>
   </section>
 
   <!-- compiler -->
   <section id="api-compiler">
-    <h3>piscinette.checks.compiler</h3>
+    <h3>ganesha.checks.compiler</h3>
     <div class="api-entry">
       <p class="api-sig">check(files: Sequence[str]) → bool</p>
       <p>
@@ -855,14 +855,14 @@ ok = check(["ex00/ft_putchar.c", "include/libft.h"])</code></pre>
         All failures are collected before returning. Returns
         <code>False</code> if gcc is not installed.
       </p>
-      <pre><code>from piscinette.checks.compiler import check
+      <pre><code>from ganesha.checks.compiler import check
 ok = check(["ex00/ft_putchar.c", "ex01/ft_print_alphabet.c"])</code></pre>
     </div>
   </section>
 
   <!-- forbidden -->
   <section id="api-forbidden">
-    <h3>piscinette.checks.forbidden</h3>
+    <h3>ganesha.checks.forbidden</h3>
     <div class="api-entry">
       <p class="api-sig">
         check(files: Sequence[str], forbidden: Sequence[str]) → bool
@@ -875,14 +875,14 @@ ok = check(["ex00/ft_putchar.c", "ex01/ft_print_alphabet.c"])</code></pre>
         is forbidden. Returns <code>True</code> if <em>forbidden</em>
         is empty.
       </p>
-      <pre><code>from piscinette.checks.forbidden import check
+      <pre><code>from ganesha.checks.forbidden import check
 ok = check(["ex00/ft_putchar.c"], ["printf", "malloc"])</code></pre>
     </div>
   </section>
 
   <!-- commit_msg -->
   <section id="api-commit-msg">
-    <h3>piscinette.checks.commit_msg</h3>
+    <h3>ganesha.checks.commit_msg</h3>
 
     <h4>Constants</h4>
     <table>
@@ -907,7 +907,7 @@ ok = check(["ex00/ft_putchar.c"], ["printf", "malloc"])</code></pre>
         <code>DEFAULT_PATTERN</code> the gamification layer is active.
         All rejection output goes to <em>stderr</em>; nothing is raised.
       </p>
-      <pre><code>from piscinette.checks.commit_msg import check, DEFAULT_PATTERN
+      <pre><code>from ganesha.checks.commit_msg import check, DEFAULT_PATTERN
 
 ok = check(".git/COMMIT_EDITMSG")
 # or with a custom pattern:
@@ -924,8 +924,8 @@ ok = check(path, pattern=r"^(ex|rush|exam)\d+: .+")</code></pre>
       Python 3.11+ and
       <a href="https://docs.astral.sh/uv">uv</a> are required.
     </p>
-    <pre><code>git clone https://github.com/qlrd/monsieur-piscinette
-cd monsieur-piscinette
+    <pre><code>git clone https://github.com/qlrd/monsieur-ganesha
+cd monsieur-ganesha
 uv sync --dev</code></pre>
   </section>
 
@@ -934,7 +934,7 @@ uv sync --dev</code></pre>
     <p>All of the following must pass before committing:</p>
     <pre><code>black --check src/ tests/        # formatting (88-column)
 isort --check-only src/ tests/   # import order
-pylint src/piscinette/           # lint — 10.00/10 required
+pylint src/ganesha/           # lint — 10.00/10 required
 pytest                           # all 45 tests must pass</code></pre>
 
     <p>To auto-fix formatting before checking:</p>
@@ -944,11 +944,11 @@ isort src/ tests/</code></pre>
 
   <section id="dev-layout">
     <h3>Project layout</h3>
-    <pre><code>src/piscinette/
+    <pre><code>src/ganesha/
 ├── __init__.py        public API (re-exports checks + config)
-├── __main__.py        python -m piscinette entry point
+├── __main__.py        python -m ganesha entry point
 ├── cli.py             CLI entry point (argparse)
-├── config.py          .piscinette.toml loader (tomllib)
+├── config.py          .ganesha.toml loader (tomllib)
 └── checks/
     ├── __init__.py
     ├── norminette.py  subprocess: norminette
@@ -973,13 +973,13 @@ tests/
     <p>Commit messages must follow Conventional Commits 1.0.0.</p>
     <p>
       For large changes, open an issue before starting work.
-      See <a href="https://github.com/qlrd/monsieur-piscinette/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a>
+      See <a href="https://github.com/qlrd/monsieur-ganesha/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a>
       for the full workflow.
     </p>
 
     <h4>Adding a new check</h4>
     <ol>
-      <li>Create <code>src/piscinette/checks/&lt;name&gt;.py</code>
+      <li>Create <code>src/ganesha/checks/&lt;name&gt;.py</code>
         with a public <code>check()</code> function and verbose
         docstrings.</li>
       <li>Export it in <code>checks/__init__.py</code>.</li>
@@ -995,7 +995,7 @@ tests/
   <footer>
     <p>
       <strong>Monsieur Piscinette</strong> v0.1.0 ·
-      <a href="https://github.com/qlrd/monsieur-piscinette">GitHub</a> ·
+      <a href="https://github.com/qlrd/monsieur-ganesha">GitHub</a> ·
       MIT License ·
       Related:
       <a href="https://github.com/xicodomingues/francinette">Francinette</a> ·
