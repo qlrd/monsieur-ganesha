@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Monsieur Piscinette — Documentation</title>
+  <title>Monsieur Ganesha — Documentation</title>
   <style>
     /* ── Reset ─────────────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -336,6 +336,12 @@
     <li><a href="#dev-layout">Project layout</a></li>
     <li><a href="#dev-contribute">Contributing</a></li>
   </ul>
+
+  <p class="section-label">Trust &amp; verification</p>
+  <ul>
+    <li><a href="#rebase-note">Rebase note</a></li>
+    <li><a href="#keys">Public keys</a></li>
+  </ul>
 </nav>
 
 <!-- ═══════════════════════════════════════════════════════════════
@@ -345,7 +351,7 @@
 
   <!-- ── Hero ─────────────────────────────────────────────────── -->
   <div class="hero">
-    <h1>Monsieur Piscinette</h1>
+    <h1>Monsieur Ganesha</h1>
     <p class="tagline">
       Pre-commit hooks for the 42 school piscine —
       norminette, compiler, forbidden functions, commit format.
@@ -358,7 +364,7 @@
     <h2>What is it?</h2>
 
     <p>
-      Monsieur Piscinette is a suite of four
+      Monsieur Ganesha is a suite of four
       <a href="https://pre-commit.com">pre-commit</a> hooks that run
       automatically before every <code>git commit</code> in a 42 piscine
       repository. The hooks catch norm violations, compile errors, forbidden
@@ -400,32 +406,42 @@
     <h2>The characters</h2>
 
     <blockquote>
-      Bonjour, monde. Monsieur Piscinette.<br>
+      Bonjour, monde.<br>
       I am not here to be gentle.<br>
-      I am here so moulinette does not have to be harsh.
+      I am here so she does not have to be harsh.
       <cite>— Monsieur Ganesha, Directeur,
         <a href="https://42.fr">Conservatoire de Paris XLII</a></cite>
     </blockquote>
 
     <p>
-      Monsieur Piscinette operates under the dual authority of
-      <strong>Monsieur Ganesha</strong>, wise director of the
-      Conservatoire de Paris XLII, and the beautiful — and terrible —
-      <strong>Mademoiselle Norminette</strong>, who likes everything
-      with potatoes.
+      Named after <strong>Monsieur Ganesha</strong>, director of the
+      <a href="https://42.fr">Conservatoire de Paris XLII</a> and husband of
+      <strong>Mademoiselle Norminette</strong>.
     </p>
     <p>
+      Mademoiselle Norminette and her younger sister,
+      <strong>Mademoiselle Francinette</strong>, are the daughters of the
+      respectable <strong>Madame Moulinette</strong>.
       The rigor is the care. The demand is the protection.
-      Moulinette has no mercy; Mademoiselle Norminette, even less —
+      Madame Moulinette has no mercy; Mademoiselle Norminette, even less —
       but Ganesha at least has a reason.
+    </p>
+    <p>
+      Monsieur Ganesha was the first student of Paris XLII to complete every
+      exercise list and exam with honours — using <strong>a single push per
+      step</strong>. Madame Moulinette found this absurd.
+      Ganesha recalls: <em>c'était terrible.</em>
     </p>
 
     <div class="callout callout-warn">
       <strong>A warning.</strong> When you and Mademoiselle Norminette
       fall in love — when your code is clean, your norm is perfect, and
       she begins to look at you the way she looks at a file with no errors
-      — Moulinette notices. She always notices. <em>C'est terrible.</em>
-      Have a good session. Close the door behind you.
+      — Moulinette notices. She always notices. She does not love.
+      She evaluates. But she watches. And when she sees that Norminette
+      has chosen you, something in her pipeline shifts.
+      <em>C'est terrible.</em>
+      There is nothing to be done. Have a good session. Close the door.
       <br><small style="color:var(--muted)">— Monsieur Ganesha, in confidence</small>
     </div>
   </section>
@@ -773,7 +789,7 @@ feat: &lt;73 chars...&gt;          # subject too long</code></pre>
   <h2 id="api" style="margin-top:3rem">API reference</h2>
   <p>
     All public functions can be imported and called directly, which is
-    useful for testing or for embedding Monsieur Piscinette checks into
+    useful for testing or for embedding Monsieur Ganesha checks into
     other tools.
   </p>
 
@@ -991,10 +1007,64 @@ tests/
     </ol>
   </section>
 
+  <!-- ── Rebase note ──────────────────────────────────────────── -->
+  <section id="rebase-note">
+    <h2>Rebase note</h2>
+    <blockquote>
+      Congratulations.<br>
+      If you are reading this, you have completed at least one correct
+      rebase — with <code>fixup</code>, <code>reword</code>, or
+      <code>edit</code> — and the reflog proves it. The reflog has not
+      been modified. It never should be. You rewrote with intention,
+      and the reflog remembers.<br><br>
+      <code>git reflog</code> does not lie. It shows every move you made.
+      A clean rebase, visible in the reflog, is a signature.
+      It says: I understood what I was doing.<br><br>
+      Monsieur Ganesha has noted this.
+      <cite>— Monsieur Ganesha, Directeur,
+        <a href="https://42.fr">Conservatoire de Paris XLII</a></cite>
+    </blockquote>
+    <p>The safest rebase workflow — without overwriting reflogs:</p>
+    <pre><code>git reflog                   # read history — never modify it
+git rebase -i HEAD~3         # fixup, reword, edit — with intention
+git reflog                   # find the sha before the rebase
+git reset --hard HEAD@{n}    # recover the exact state if needed</code></pre>
+    <p>
+      Never modify the reflog. Never use <code>git push --force</code>
+      to overwrite a shared branch. The reflog on your machine is yours —
+      and it is the only honest witness you have.
+    </p>
+  </section>
+
+  <!-- ── Public keys ───────────────────────────────────────────── -->
+  <section id="keys">
+    <h2>Public keys</h2>
+    <p>
+      All commits are signed by
+      <strong>Monsieur Piscinette</strong>
+      (<code>piscinette@conservatoire42.fr</code>) and attested by the
+      Mahatrimurti: Madame Kali, Monsieur Shiva, and Monsieur Ganesha.
+    </p>
+    <p>Import all keys to verify signatures locally:</p>
+    <pre><code>gpg --import keys/*.asc
+git log --show-signature</code></pre>
+    <table>
+      <thead><tr><th>File</th><th>Identity</th><th>Usage</th></tr></thead>
+      <tbody>
+        <tr><td><code>keys/madame-kali.asc</code></td><td>Madame Kali</td><td>Root of trust [C]</td></tr>
+        <tr><td><code>keys/monsieur-shiva.asc</code></td><td>Monsieur Shiva</td><td>Consciousness, purge support [C]</td></tr>
+        <tr><td><code>keys/monsieur-ganesha.asc</code></td><td>Monsieur Ganesha</td><td>Directeur du Conservatoire [C]</td></tr>
+        <tr><td><code>keys/bija-krim.asc</code></td><td>Bija Krim (Krīṃ)</td><td>Seed mantra of Kali [C]</td></tr>
+        <tr><td><code>keys/monsieur-piscinette.asc</code></td><td>Monsieur Piscinette</td><td>Commit signer [SC]</td></tr>
+        <tr><td><code>keys/qlrddev.asc</code></td><td>qlrddev@proton.me</td><td>Maintainer personal key [S]</td></tr>
+      </tbody>
+    </table>
+  </section>
+
   <!-- ── Footer ───────────────────────────────────────────────── -->
   <footer>
     <p>
-      <strong>Monsieur Piscinette</strong> v0.1.0 ·
+      <strong>Monsieur Ganesha</strong> v0.1.0 ·
       <a href="https://github.com/qlrd/monsieur-ganesha">GitHub</a> ·
       MIT License ·
       Related:
