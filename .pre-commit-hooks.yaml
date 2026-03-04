@@ -29,3 +29,11 @@
   language: python
   stages: [commit-msg]
   pass_filenames: true
+
+- id: readme
+  name: README Check
+  description: Verifica README.md e propõe correções estruturais
+  entry: ganesha readme
+  language: python
+  files: '^README\.md$'
+  pass_filenames: true

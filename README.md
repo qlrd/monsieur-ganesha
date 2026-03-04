@@ -39,6 +39,7 @@ Checks run before every `git commit`:
 | `c-compiler`          | Compiles each `.c` with `-Wall -Wextra -Werror`   |
 | `forbidden-functions` | Blocks calls to configurable forbidden functions  |
 | `commit-message`      | Enforces Conventional Commits 1.0.0 format        |
+| `readme`              | Checks `README.md` and proposes corrections       |
 
 ---
 
@@ -54,6 +55,7 @@ Checks run before every `git commit`:
   - [c-compiler](#c-compiler)
   - [forbidden-functions](#forbidden-functions)
   - [commit-message](#commit-message)
+  - [readme](#readme)
 - [Commit format](#commit-format)
 - [Running checks manually](#running-checks-manually)
 - [Development](#development)
@@ -96,6 +98,7 @@ python -m ganesha norminette  src/*.c src/*.h
 python -m ganesha compiler    src/*.c
 python -m ganesha forbidden   src/*.c
 python -m ganesha commit-msg  .git/COMMIT_EDITMSG
+python -m ganesha readme      README.md
 ```
 
 Exit codes: `0` pass · `1` check failed · `2` tool not found.
@@ -165,9 +168,9 @@ The script will:
 
 1. Set `git config --global core.editor vim`
 2. Install `pre-commit` via `uv` or `pip3`
-4. Create `.pre-commit-config.yaml` pointing to this repository
-5. Create a `.ganesha.toml` template with sensible defaults
-6. Activate the hooks with `pre-commit install`
+3. Create `.pre-commit-config.yaml` pointing to this repository
+4. Create a `.ganesha.toml` template with sensible defaults
+5. Activate the hooks with `pre-commit install`
 
 To configure manually, add the following to your
 `.pre-commit-config.yaml`:
@@ -181,6 +184,7 @@ repos:
       - id: c-compiler
       - id: forbidden-functions
       - id: commit-message
+      - id: readme
 ```
 
 Then activate the hooks:
@@ -307,6 +311,30 @@ Commit Message Format...........................................Failed
 REJECTED.
 ```
 
+### readme
+
+Checks every staged `README.md` file for common structural issues
+and prints a correction proposal for each one found.
+
+Checks performed:
+
+- **Empty file** — blocked with a message to add a title and
+  description.
+- **No title** — blocked when the file contains no ATX heading
+  (`# ...`), with a suggestion to add `# <Project Name>`.
+
+Example failures:
+
+```
+README Check....................................................Failed
+README.md: empty file — add at least a title and a short description.
+```
+
+```
+README Check....................................................Failed
+README.md: no title found — add "# <Project Name>" as the first line.
+```
+
 ---
 
 ## Commit format
@@ -382,6 +410,7 @@ Run a single hook by id:
 ```bash
 pre-commit run norminette --all-files
 pre-commit run forbidden-functions --all-files
+pre-commit run readme --all-files
 ```
 
 Invoke the script directly:
@@ -391,6 +420,7 @@ ganesha norminette  ex00/ft_putchar.c header.h
 ganesha compiler    ex00/ft_putchar.c
 ganesha forbidden   ex00/ft_putchar.c
 ganesha commit-msg  .git/COMMIT_EDITMSG
+ganesha readme      README.md
 ```
 
 Skip all hooks for a single commit (use with care):
@@ -530,8 +560,9 @@ and install the package via `language: python`.
 ### Project layout
 
 ```
-src/piscinette/
+src/ganesha/
   __init__.py       public API (re-exports checks + config)
+  __main__.py       python -m ganesha entry point
   cli.py            thin CLI wrapper using argparse
   config.py         reads .ganesha.toml (tomllib — stdlib)
   checks/
@@ -539,9 +570,11 @@ src/piscinette/
     compiler.py     gcc -fsyntax-only, one invocation per file
     forbidden.py    pure-Python regex scan, no subprocess
     commit_msg.py   CC 1.0.0 validator, gamification layer
+    readme.py       README.md structural validator
 tests/
   test_forbidden.py   integration tests via lib API + tmp_path
   test_commit_msg.py  integration tests via lib API + tmp_path
+  test_readme.py      integration tests via lib API + tmp_path
   test_cli.py         CLI tests via subprocess
   fixtures/           valid.c  norm_error.c  compile_error.c  forbidden.c
 ```
