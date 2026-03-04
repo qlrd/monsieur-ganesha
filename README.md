@@ -322,6 +322,15 @@ Checks performed:
   description.
 - **No title** — blocked when the file contains no ATX heading
   (`# ...`), with a suggestion to add `# <Project Name>`.
+- **No file-descriptor documentation** — blocked when the file does
+  not mention which file descriptors the program uses.  Accepted
+  keywords: `stdin`, `stdout`, `stderr`, `STDIN_FILENO`,
+  `STDOUT_FILENO`, `STDERR_FILENO`, `file descriptor`, `fd 0`,
+  `fd 1`, `fd 2` (and variants without the space, e.g. `fd1`).
+  Students should document which of the standard descriptors
+  (0 = stdin, 1 = stdout, 2 = stderr) their program reads from or
+  writes to, and are free to use shell redirects as the exercise
+  requires.
 
 Example failures:
 
@@ -333,6 +342,13 @@ README.md: empty file — add at least a title and a short description.
 ```
 README Check....................................................Failed
 README.md: no title found — add "# <Project Name>" as the first line.
+```
+
+```
+README Check....................................................Failed
+README.md: no file descriptor usage documented — mention which file
+    descriptors your program reads from and writes to
+    (0=stdin, 1=stdout, 2=stderr).
 ```
 
 ---
