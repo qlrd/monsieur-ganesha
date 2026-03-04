@@ -1,4 +1,14 @@
-# Monsieur Piscinette
+# Monsieur Ganesha
+
+[![CI](https://github.com/qlrd/monsieur-ganesha/actions/workflows/ci.yml/badge.svg)](https://github.com/qlrd/monsieur-ganesha/actions/workflows/ci.yml)
+[![PyPI downloads](https://img.shields.io/pypi/dm/monsieur-ganesha)](https://pypi.org/project/monsieur-ganesha/)
+[![PyPI version](https://img.shields.io/pypi/v/monsieur-ganesha)](https://pypi.org/project/monsieur-ganesha/)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+
+<p align="center">
+  <img src="assets/ganesha.png" alt="Monsieur Ganesha" width="320"/>
+</p>
 
 Pre-commit hooks for the 42 school piscine.
 Checks your C code *before* Moulinette does.
@@ -12,7 +22,7 @@ grader that runs norminette, compiles your files, and checks for
 forbidden functions. If your push fails any of those checks, it
 counts against you.
 
-**Monsieur Piscinette** runs those exact same checks locally,
+**Monsieur Ganesha** runs those exact same checks locally,
 before you push. Think of it as a dress rehearsal: catch the
 problems yourself, fix them quietly, and only push when you are
 ready. Moulinette never needs to see your drafts.
@@ -59,10 +69,10 @@ up-to-date feedback.
 You can also run any check manually at any time:
 
 ```bash
-python -m piscinette norminette  src/*.c src/*.h
-python -m piscinette compiler    src/*.c
-python -m piscinette forbidden   src/*.c
-python -m piscinette commit-msg  .git/COMMIT_EDITMSG
+python -m ganesha norminette  src/*.c src/*.h
+python -m ganesha compiler    src/*.c
+python -m ganesha forbidden   src/*.c
+python -m ganesha commit-msg  .git/COMMIT_EDITMSG
 ```
 
 Each command exits with `0` (pass), `1` (check failed), or
@@ -75,7 +85,7 @@ Each command exits with `0` (pass), `1` (check failed), or
 Once you are comfortable with the default rules, you can tighten
 them to simulate a real evaluation session.
 
-Create `.piscinette.toml` at the root of your project:
+Create `.ganesha.toml` at the root of your project:
 
 ```toml
 [project]
@@ -123,7 +133,7 @@ everything passes. If it passes here, it will pass Moulinette.
 
 ```bash
 bash <(curl -fsSL \
-  https://raw.githubusercontent.com/YOUR_USER/monsieur-piscinette/main/install.sh)
+  https://raw.githubusercontent.com/YOUR_USER/monsieur-ganesha/main/install.sh)
 ```
 
 The script installs `pre-commit`, configures the hooks for the
@@ -135,7 +145,7 @@ Add this to your project's `.pre-commit-config.yaml`:
 
 ```yaml
 repos:
-  - repo: https://github.com/YOUR_USER/monsieur-piscinette
+  - repo: https://github.com/YOUR_USER/monsieur-ganesha
     rev: v0.1.0
     hooks:
       - id: norminette
@@ -155,7 +165,7 @@ pre-commit install --hook-type commit-msg
 
 ## Configuration reference
 
-All settings live in `.piscinette.toml` at the root of your
+All settings live in `.ganesha.toml` at the root of your
 repository. The file is optional — defaults are used when it is
 absent.
 
@@ -186,7 +196,7 @@ The subject line must not exceed **72 characters**.
 
 ## Commit message format
 
-Monsieur Piscinette enforces
+Monsieur Ganesha enforces
 [Conventional Commits 1.0.0](https://www.conventionalcommits.org/)
 by default.
 
@@ -231,13 +241,13 @@ uv sync --dev          # install dependencies
 pytest                 # run all tests (45 tests)
 black --check src/ tests/
 isort --check-only src/ tests/
-pylint src/piscinette/ # must score 10.00/10
+pylint src/ganesha/ # must score 10.00/10
 ```
 
 ### Project layout
 
 ```
-src/piscinette/
+src/ganesha/
 ├── __init__.py
 ├── __main__.py
 ├── cli.py
