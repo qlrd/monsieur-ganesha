@@ -140,10 +140,11 @@ def check(files: Sequence[str]) -> bool:
     readme_files = [f for f in files if Path(f).name == "README.md"]
 
     if not readme_files:
-        # No staged README.md — check if one exists on disk anyway.
-        # Students who create a README without staging it (e.g. in
-        # exercises that forbid extra files) still earn +XP.
-        if Path("README.md").is_file():
+        # No README.md matched — only check for an unstaged one on disk
+        # when the hook was invoked with no file arguments at all (i.e.
+        # via always_run: true with nothing staged).  If other files were
+        # passed but none matched, skip silently to avoid false +XP.
+        if not files and Path("README.md").is_file():
             print(
                 "  README.md found but not staged — +XP for documenting.",
                 file=sys.stderr,

@@ -2,6 +2,7 @@
 
 from ganesha.checks.readme import check
 
+
 def test_binary_readme_does_not_block(tmp_path):
     p = tmp_path / "README.md"
     p.write_bytes(b"\xff\xfe invalid utf-8 \x00\x01")
@@ -188,3 +189,29 @@ def test_valid_readme_earns_xp(tmp_path, capsys):
     captured = capsys.readouterr()
     assert "well documented" in captured.err
     assert "+XP" in captured.err
+
+
+# --- Unstaged README detection ---
+
+
+def test_no_files_with_readme_on_disk_earns_xp(tmp_path, monkeypatch, capsys):
+    (tmp_path / "README.md").write_text("# Hello\n\nWrites to stdout.\n")
+    monkeypatch.chdir(tmp_path)
+    assert check([]) is True
+    assert "+XP for documenting" in capsys.readouterr().err
+
+
+def test_no_files_without_readme_on_disk_is_silent(tmp_path, monkeypatch, capsys):
+    monkeypatch.chdir(tmp_path)
+    assert check([]) is True
+    assert capsys.readouterr().err == ""
+
+
+def test_non_readme_files_passed_do_not_trigger_unstaged_check(
+    tmp_path, monkeypatch, capsys
+):
+    (tmp_path / "README.md").write_text("# Hello\n\nWrites to stdout.\n")
+    monkeypatch.chdir(tmp_path)
+    # files is non-empty but contains no README.md — unstaged check must not fire
+    assert check(["CONTRIBUTING.md"]) is True
+    assert capsys.readouterr().err == ""

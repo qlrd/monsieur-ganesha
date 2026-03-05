@@ -37,3 +37,4 @@
   language: python
   files: '(^|/)README\.md$'
   pass_filenames: true
+  always_run: true

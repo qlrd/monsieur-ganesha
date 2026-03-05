@@ -101,7 +101,7 @@ python -m ganesha commit-msg  .git/COMMIT_EDITMSG
 python -m ganesha readme      README.md
 ```
 
-Exit codes: `0` pass · `1` check failed · `2` tool not found.
+Exit codes: `0` pass · `1` check failed · `2` internal error (e.g. malformed `.ganesha.toml`).
 
 ---
 
@@ -348,9 +348,7 @@ README.md: no title found — add "# <Project Name>" as the first line (+XP avai
 
 ```
 README Check....................................................Passed
-README.md: no file descriptor usage documented — mention which file
-    descriptors your program reads from and writes to
-    (0=stdin, 1=stdout, 2=stderr) (+XP available).
+README.md: no file descriptor usage documented — mention which file descriptors your program reads from and writes to (0=stdin, 1=stdout, 2=stderr) (+XP available).
 ```
 
 Example when fully documented:
