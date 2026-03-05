@@ -153,3 +153,26 @@ def test_custom_pattern_rejects_cc_format(tmp_path):
         )
         is False
     )
+
+
+# --- 42-school scopes as sub-scopes in CC 1.0.0 ---
+
+
+def test_feat_with_ex00_scope_valid(tmp_path):
+    assert check(msg_file(tmp_path, "feat(ex00): implement ft_putchar\n")) is True
+
+
+def test_fix_with_rush00_scope_valid(tmp_path):
+    assert check(msg_file(tmp_path, "fix(rush00): handle edge case\n")) is True
+
+
+def test_docs_with_exam01_scope_valid(tmp_path):
+    assert check(msg_file(tmp_path, "docs(exam01): add subject description\n")) is True
+
+
+def test_feat_breaking_with_ex00_scope_valid(tmp_path):
+    assert check(msg_file(tmp_path, "feat(ex00)!: rewrite with different algorithm\n")) is True
+
+
+def test_bare_ex00_prefix_fails_without_custom_pattern(tmp_path):
+    assert check(msg_file(tmp_path, "ex00: implement ft_putchar\n")) is False

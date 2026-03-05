@@ -18,17 +18,24 @@ Where ``type`` is one of:
     feat · fix · docs · style · refactor · perf · test
     build · ci · chore · revert · init
 
+The ``(<scope>)`` field accepts any label, including 42-school
+exercise identifiers such as ``ex00``, ``rush00``, ``exam01``.
+
 Examples of valid subjects::
 
     feat: add norminette timeout option
     fix(forbidden): handle empty file list
     feat!: drop support for gcc older than 12
     docs(readme): update installation section
+    feat(ex00): implement ft_putchar
+    fix(rush00): handle edge case
+    feat(ex00)!: rewrite with different algorithm
 
 Custom pattern
 --------------
 Students can override the pattern in ``.ganesha.toml`` to use the
-42-school ``ex00: description`` format instead::
+bare 42-school ``ex00: description`` format (without a CC type
+prefix) instead::
 
     [commit]
     pattern = "^(ex|rush|exam)\\\\d+: .+"

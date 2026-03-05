@@ -333,13 +333,23 @@ characters.
 | `revert`   | Reverts a previous commit                      |
 | `init`     | Initial commit                                 |
 
-Valid examples:
+The `(<scope>)` field is optional and accepts any label, including
+42-school exercise identifiers:
+
+```
+feat(ex00): implement ft_putchar
+fix(rush00): handle edge case in ft_printf
+docs(exam01): add subject description
+```
+
+More valid examples:
 
 ```
 feat: implement ft_putchar
 fix(norminette): skip empty file list
 docs: add configuration section to README
 feat!: change exit code on internal error
+feat(ex00)!: rewrite with different algorithm
 test: add integration test for forbidden scan
 chore: update uv.lock
 init: project setup
@@ -351,7 +361,7 @@ Invalid examples (all rejected silently):
 WIP
 fix stuff
 EX00: uppercase prefix
-ex00: 42-school format (not CC 1.0.0 by default)
+ex00: 42-school prefix without CC type
 feat:
 feat: no description
 ```
@@ -359,8 +369,8 @@ feat: no description
 Append `!` after the type or scope to mark a breaking change. Add a
 body explaining why — Monsieur Ganesha rewards explanations with XP.
 
-To use the 42-school `ex00:` format instead, set the pattern in
-`.ganesha.toml`:
+To use the bare 42-school `ex00:` format (without a CC type prefix),
+set the pattern in `.ganesha.toml`:
 
 ```toml
 [commit]
