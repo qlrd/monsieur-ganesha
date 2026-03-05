@@ -39,6 +39,7 @@ Checks run before every `git commit`:
 | `c-compiler`          | Compiles each `.c` with `-Wall -Wextra -Werror`   |
 | `forbidden-functions` | Blocks calls to configurable forbidden functions  |
 | `commit-message`      | Enforces Conventional Commits 1.0.0 format        |
+| `readme`              | Checks `README.md` and proposes corrections       |
 
 ---
 
@@ -54,6 +55,7 @@ Checks run before every `git commit`:
   - [c-compiler](#c-compiler)
   - [forbidden-functions](#forbidden-functions)
   - [commit-message](#commit-message)
+  - [readme](#readme)
 - [Commit format](#commit-format)
 - [Running checks manually](#running-checks-manually)
 - [Development](#development)
@@ -96,6 +98,7 @@ python -m ganesha norminette  src/*.c src/*.h
 python -m ganesha compiler    src/*.c
 python -m ganesha forbidden   src/*.c
 python -m ganesha commit-msg  .git/COMMIT_EDITMSG
+python -m ganesha readme      README.md
 ```
 
 Exit codes: `0` pass · `1` check failed · `2` tool not found.
@@ -181,6 +184,7 @@ repos:
       - id: c-compiler
       - id: forbidden-functions
       - id: commit-message
+      - id: readme
 ```
 
 Then activate the hooks:
@@ -307,6 +311,55 @@ Commit Message Format...........................................Failed
 REJECTED.
 ```
 
+### readme
+
+Checks every staged `README.md` file for common structural issues
+and prints advisory messages.  This hook is **non-blocking**: it
+always exits 0 and never prevents a commit.  Files with issues
+receive tips with `(+XP available)`; files that pass all checks
+earn `well documented — +XP.`
+
+Checks performed:
+
+- **Empty file** — advisory message to add a title and description.
+- **No title** — advisory message when the file contains no ATX
+  heading (`# ...`), with a suggestion to add `# <Project Name>`.
+- **No file-descriptor documentation** — advisory message when the
+  file does not mention which file descriptors the program uses.
+  Accepted keywords: `stdin`, `stdout`, `stderr`, `STDIN_FILENO`,
+  `STDOUT_FILENO`, `STDERR_FILENO`, `file descriptor`, `fd 0`,
+  `fd 1`, `fd 2` (and variants without the space, e.g. `fd1`).
+  Students should document which of the standard descriptors
+  (0 = stdin, 1 = stdout, 2 = stderr) their program reads from or
+  writes to, and are free to use shell redirects as the exercise
+  requires.
+
+Example advisory messages (commit still proceeds):
+
+```
+README Check....................................................Passed
+README.md: empty file — add at least a title and a short description (+XP available).
+```
+
+```
+README Check....................................................Passed
+README.md: no title found — add "# <Project Name>" as the first line (+XP available).
+```
+
+```
+README Check....................................................Passed
+README.md: no file descriptor usage documented — mention which file
+    descriptors your program reads from and writes to
+    (0=stdin, 1=stdout, 2=stderr) (+XP available).
+```
+
+Example when fully documented:
+
+```
+README Check....................................................Passed
+  README.md: well documented — +XP.
+```
+
 ---
 
 ## Commit format
@@ -382,6 +435,7 @@ Run a single hook by id:
 ```bash
 pre-commit run norminette --all-files
 pre-commit run forbidden-functions --all-files
+pre-commit run readme --all-files
 ```
 
 Invoke the script directly:
@@ -391,6 +445,7 @@ ganesha norminette  ex00/ft_putchar.c header.h
 ganesha compiler    ex00/ft_putchar.c
 ganesha forbidden   ex00/ft_putchar.c
 ganesha commit-msg  .git/COMMIT_EDITMSG
+ganesha readme      README.md
 ```
 
 Skip all hooks for a single commit (use with care):
@@ -532,6 +587,7 @@ and install the package via `language: python`.
 ```
 src/ganesha/
   __init__.py       public API (re-exports checks + config)
+  __main__.py       python -m ganesha entry point
   cli.py            thin CLI wrapper using argparse
   config.py         reads .ganesha.toml (tomllib — stdlib)
   checks/
@@ -539,9 +595,11 @@ src/ganesha/
     compiler.py     gcc -fsyntax-only, one invocation per file
     forbidden.py    pure-Python regex scan, no subprocess
     commit_msg.py   CC 1.0.0 validator, gamification layer
+    readme.py       README.md structural validator
 tests/
   test_forbidden.py   integration tests via lib API + tmp_path
   test_commit_msg.py  integration tests via lib API + tmp_path
+  test_readme.py      integration tests via lib API + tmp_path
   test_cli.py         CLI tests via subprocess
   fixtures/           valid.c  norm_error.c  compile_error.c  forbidden.c
 ```

@@ -22,6 +22,9 @@ Subcommands
     Validate the commit message stored in *file*.  Reads the optional
     custom pattern from ``.ganesha.toml``.
 
+``ganesha readme <files...>``
+    Check README.md files for common issues and propose corrections.
+
 Exit codes
 ----------
 ``0``
@@ -43,6 +46,7 @@ After installing with ``uv sync`` or ``pip install -e .`` the
     ganesha compiler    ex00/ft_putchar.c
     ganesha forbidden   ex00/ft_putchar.c
     ganesha commit-msg  .git/COMMIT_EDITMSG
+    ganesha readme      README.md
 
 pre-commit invokes the same script automatically on every ``git commit``.
 """
@@ -106,6 +110,12 @@ def main() -> None:
         help="caminho para o arquivo com a mensagem de commit",
     )
 
+    p_readme = sub.add_parser(
+        "readme",
+        help="verifica README.md e propõe correções",
+    )
+    p_readme.add_argument("files", nargs="*")
+
     args = parser.parse_args()
 
     try:
@@ -120,6 +130,8 @@ def main() -> None:
             cfg = config.load_config()
             pattern = cfg.commit.pattern or checks.commit_msg.DEFAULT_PATTERN
             ok = checks.commit_msg.check(args.file, pattern)
+        elif args.command == "readme":
+            ok = checks.readme.check(args.files)
         else:
             ok = False
     except ValueError as e:
