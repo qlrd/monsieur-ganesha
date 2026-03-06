@@ -1,11 +1,11 @@
-"""C syntax checker via ``gcc -fsyntax-only``.
+"""C syntax checker via ``cc -fsyntax-only``.
 
 This module implements the ``c-compiler`` pre-commit hook.  It invokes
-``gcc`` on each staged ``.c`` file with the flags::
+``cc`` on each staged ``.c`` file with the flags::
 
     -Wall -Wextra -Werror -fsyntax-only
 
-The ``-fsyntax-only`` flag tells gcc to parse and type-check the file
+The ``-fsyntax-only`` flag tells cc to parse and type-check the file
 without emitting any object code, which avoids two common problems:
 
 1. **No ``.o`` conflicts** — multiple staged files can be checked
@@ -22,11 +22,11 @@ failures are printed before the function returns.
 
 Error output
 ------------
-gcc writes its error messages to *stderr* by default; this module
+cc writes its error messages to *stderr* by default; this module
 captures them and re-prints them to *stderr* unchanged.  The student
-sees the familiar gcc output they would get from running gcc manually.
+sees the familiar cc output they would get from running cc manually.
 
-If gcc is not installed the hook prints an installation hint and exits
+If cc is not installed the hook prints an installation hint and exits
 with code 1 instead of raising an unhandled :class:`FileNotFoundError`.
 """
 
@@ -36,9 +36,9 @@ from collections.abc import Sequence
 
 
 def check(files: Sequence[str]) -> bool:
-    """Run ``gcc -Wall -Wextra -Werror -fsyntax-only`` on each ``.c`` file.
+    """Run ``cc -Wall -Wextra -Werror -fsyntax-only`` on each ``.c`` file.
 
-    Iterates over *files*, skips non-``.c`` entries, and invokes gcc
+    Iterates over *files*, skips non-``.c`` entries, and invokes cc
     once per ``.c`` file.  Collects the results and returns ``False``
     if any file fails.
 
@@ -55,9 +55,9 @@ def check(files: Sequence[str]) -> bool:
     Returns:
         ``True`` if every ``.c`` file compiles without errors.
         ``True`` if *files* is empty or contains no ``.c`` files.
-        ``False`` if any file fails to compile.  gcc's error output is
+        ``False`` if any file fails to compile.  cc's error output is
         printed to *stderr* for each failing file.
-        ``False`` if gcc is not found; an installation hint is printed
+        ``False`` if cc is not found; an installation hint is printed
         to *stderr*.
 
     Examples:
@@ -85,7 +85,7 @@ def check(files: Sequence[str]) -> bool:
           Python from raising :class:`subprocess.CalledProcessError`
           on non-zero exit codes; the error is handled manually.
         * ``capture_output=True`` redirects both stdout and stderr from
-          gcc into the :class:`subprocess.CompletedProcess` result so
+          cc into the :class:`subprocess.CompletedProcess` result so
           they can be forwarded to *stderr* of the hook process.
     """
     c_files = [f for f in files if f.endswith(".c")]
@@ -98,15 +98,16 @@ def check(files: Sequence[str]) -> bool:
     for c_file in c_files:
         try:
             result = subprocess.run(
-                ["gcc", "-Wall", "-Wextra", "-Werror", "-fsyntax-only", c_file],
+                ["cc", "-Wall", "-Wextra", "-Werror", "-fsyntax-only", c_file],
                 capture_output=True,
                 text=True,
                 check=False,
             )
         except FileNotFoundError:
             print(
-                "ERRO: gcc não encontrado.\n"
-                "Instale: sudo apt install gcc  (ou equivalente)",
+                "ERRO: cc não encontrado.\n"
+                "Instale: sudo apt install build-essential"
+                "  (ou equivalente)",
                 file=sys.stderr,
             )
             return False
