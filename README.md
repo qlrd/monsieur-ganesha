@@ -637,7 +637,7 @@ submodules under `tools/`:
 After cloning, you can initialise the submodules in one step:
 
 ```bash
-git clone --recurse-submodules https://github.com/qlrd/monsieur-ganesha
+git clone --recurse-submodules <repo-url>
 ```
 
 Or, if you have already cloned the repository:
