@@ -592,6 +592,17 @@ git tag -a v0.2.0 -m "release: v0.2.0"
 git push origin main --tags
 ```
 
+Useful `git tag` options:
+
+- `-a` creates an annotated tag (recommended for releases).
+- `-m` sets the annotation message without opening an editor.
+- `-s` signs the tag with your GPG key.
+- `-l "v*"` lists tags matching a pattern.
+- `-d <tag>` deletes a local tag.
+
+Tag responsibly: mastering these options earns infinite
+elliptical-curve XP.
+
 Then create a GitHub release from the tag so pre-commit can fetch
 and install the package via `language: python`.
 
