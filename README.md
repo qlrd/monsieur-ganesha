@@ -64,6 +64,7 @@ Checks run before every `git commit`:
 - [Commit format](#commit-format)
 - [Running checks manually](#running-checks-manually)
 - [Development](#development)
+- [Submodules](#submodules)
 - [Related projects](#related-projects)
 - [Optional vim plugins](#optional-vim-plugins)
 - [License](#license)
@@ -620,6 +621,30 @@ tests/
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the full contribution
 workflow.
+
+---
+
+## Submodules
+
+This repository includes two optional testing tools as git
+submodules under `tools/`:
+
+| Submodule | Path | Description |
+|-----------|------|-------------|
+| [Francinette][francinette] | `tools/francinette` | Python piscine tester |
+| [mini-moulinette][mini-moulinette] | `tools/mini-moulinette` | Local moulinette runner |
+
+After cloning, initialise the submodules with:
+
+```bash
+git submodule update --init --recursive
+```
+
+To update them to their latest upstream commit:
+
+```bash
+git submodule update --remote --merge
+```
 
 ---
 
