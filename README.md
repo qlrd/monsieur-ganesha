@@ -158,7 +158,7 @@ passes here, it will pass Moulinette on those checks.
 - Python 3.10.12 or later
 - `pre-commit` >= 3.0
 - `norminette` (for the norminette hook — `pip install norminette`)
-- `cc` 11.4.0 (the same used on 42 school).
+- `cc` (typically GCC 11.4.0 on 42 school machines)
 
 ---
 

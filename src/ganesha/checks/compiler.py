@@ -106,8 +106,8 @@ def check(files: Sequence[str]) -> bool:
         except FileNotFoundError:
             print(
                 "ERRO: cc não encontrado.\n"
-                "Instale: sudo apt install build-essential"
-                "  (ou equivalente)",
+                "Instale: sudo apt install build-essential "
+                "(ou equivalente)",
                 file=sys.stderr,
             )
             return False
