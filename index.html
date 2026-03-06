@@ -221,6 +221,35 @@
     .callout-note { background: #EDF2FB; border-left: 3px solid var(--blue); }
     .callout-warn { background: #FBF3ED; border-left: 3px solid #B05A00; }
 
+    /* ── Alert messages (hook output) ────────────────────────── */
+    .alert {
+      display: flex;
+      align-items: baseline;
+      gap: .6em;
+      border-radius: 5px;
+      padding: .65rem 1rem;
+      margin: .5rem 0;
+      font-family: var(--mono);
+      font-size: .83em;
+      line-height: 1.5;
+    }
+    .alert-icon { font-style: normal; flex-shrink: 0; }
+    .alert-warn {
+      background: #FBF3ED;
+      border-left: 3px solid #B05A00;
+      color: #5C3500;
+    }
+    .alert-ok {
+      background: #EDF5ED;
+      border-left: 3px solid #2E6B2E;
+      color: #1A3D1A;
+    }
+    .alert-info {
+      background: #EDF2FB;
+      border-left: 3px solid var(--blue);
+      color: #1A3A7A;
+    }
+
     /* ── API entries ──────────────────────────────────────────── */
     .api-entry {
       background: var(--surface);
@@ -303,6 +332,7 @@
     <li><a href="#hook-compiler">c-compiler</a></li>
     <li><a href="#hook-forbidden">forbidden-functions</a></li>
     <li><a href="#hook-commit">commit-message</a></li>
+    <li><a href="#hook-readme">readme</a></li>
   </ul>
 
   <p class="section-label">Commit format</p>
@@ -318,6 +348,7 @@
     <li><a href="#cli-compiler">compiler</a></li>
     <li><a href="#cli-forbidden">forbidden</a></li>
     <li><a href="#cli-commit-msg">commit-msg</a></li>
+    <li><a href="#cli-readme">readme</a></li>
   </ul>
 
   <p class="section-label">API reference</p>
@@ -327,6 +358,7 @@
     <li><a href="#api-compiler">checks.compiler</a></li>
     <li><a href="#api-forbidden">checks.forbidden</a></li>
     <li><a href="#api-commit-msg">checks.commit_msg</a></li>
+    <li><a href="#api-readme">checks.readme</a></li>
   </ul>
 
   <p class="section-label">Development</p>
@@ -354,7 +386,7 @@
     <h1>Monsieur Ganesha</h1>
     <p class="tagline">
       Pre-commit hooks for the 42 school piscine —
-      norminette, compiler, forbidden functions, commit format.
+      norminette, compiler, forbidden functions, commit format, README check.
     </p>
     <p class="version">v0.1.0 · Python 3.11+ · MIT</p>
   </div>
@@ -364,12 +396,13 @@
     <h2>What is it?</h2>
 
     <p>
-      Monsieur Ganesha is a suite of four
+      Monsieur Ganesha is a suite of five
       <a href="https://pre-commit.com">pre-commit</a> hooks that run
       automatically before every <code>git commit</code> in a 42 piscine
       repository. The hooks catch norm violations, compile errors, forbidden
-      function calls, and malformed commit messages <em>before</em> they
-      reach the repository — so moulinette never has to see them first.
+      function calls, malformed commit messages, and missing README structure
+      <em>before</em> they reach the repository — so moulinette never has
+      to see them first.
     </p>
 
     <table>
@@ -397,6 +430,11 @@
         <td><code>commit-message</code></td>
         <td>Commit subject format (Conventional Commits 1.0.0)</td>
         <td>Pure-Python regex</td>
+      </tr>
+      <tr>
+        <td><code>readme</code></td>
+        <td>README.md structure — non-blocking advisory (+XP)</td>
+        <td>Pure-Python</td>
       </tr>
     </table>
   </section>
@@ -620,6 +658,53 @@ functions = ["printf", "malloc", "realloc", "free", "calloc"]
     </p>
   </section>
 
+  <section id="hook-readme">
+    <h3>readme</h3>
+    <p>
+      Checks every staged <code>README.md</code> for common structural
+      issues. This hook is <strong>non-blocking</strong>: it always exits
+      with code&nbsp;0 and never prevents a commit. Files with issues
+      receive advisory messages; files that pass all checks earn
+      <code>+XP</code>.
+    </p>
+    <pre><code># .pre-commit-config.yaml
+- id: readme</code></pre>
+
+    <h4>Advisory messages</h4>
+    <div class="alert alert-warn">
+      <em class="alert-icon">⚠</em>
+      README.md: empty file — add at least a title and a short description (+XP available).
+    </div>
+    <div class="alert alert-warn">
+      <em class="alert-icon">⚠</em>
+      README.md: no title found — add "# &lt;Project Name&gt;" as the first line (+XP available).
+    </div>
+    <div class="alert alert-warn">
+      <em class="alert-icon">⚠</em>
+      README.md: no file descriptor usage documented — mention which file descriptors your program reads from and writes to (0=stdin, 1=stdout, 2=stderr) (+XP available).
+    </div>
+
+    <h4>When fully documented</h4>
+    <div class="alert alert-ok">
+      <em class="alert-icon">✓</em>
+      README.md: well documented — +XP.
+    </div>
+
+    <h4>When README exists but is not staged</h4>
+    <div class="alert alert-info">
+      <em class="alert-icon">→</em>
+      README.md found but not staged — +XP for documenting.
+    </div>
+
+    <p style="margin-top:1rem">
+      The hook always runs (<code>always_run: true</code>) and checks only the
+      top-level <code>README.md</code>. A level-1 ATX heading is a line beginning
+      with <code># </code> (hash followed by a space). File descriptor usage is
+      detected by scanning for <code>stdin</code>, <code>stdout</code>,
+      <code>stderr</code>, or <code>fd</code> in the file body.
+    </p>
+  </section>
+
   <!-- ── Commit format ─────────────────────────────────────────── -->
   <section id="cc-format">
     <h2>Conventional Commits 1.0.0</h2>
@@ -785,6 +870,16 @@ feat: &lt;73 chars...&gt;          # subject too long</code></pre>
     <pre><code>ganesha commit-msg .git/COMMIT_EDITMSG</code></pre>
   </section>
 
+  <section id="cli-readme">
+    <h3><code>ganesha readme &lt;files...&gt;</code></h3>
+    <p>
+      Check the given <code>README.md</code> files for structural issues.
+      Always exits&nbsp;0. Advisory messages are printed to
+      <em>stderr</em>.
+    </p>
+    <pre><code>ganesha readme README.md</code></pre>
+  </section>
+
   <!-- ── API reference ─────────────────────────────────────────── -->
   <h2 id="api" style="margin-top:3rem">API reference</h2>
   <p>
@@ -931,6 +1026,28 @@ ok = check(path, pattern=r"^(ex|rush|exam)\d+: .+")</code></pre>
     </div>
   </section>
 
+  <!-- readme -->
+  <section id="api-readme">
+    <h3>ganesha.checks.readme</h3>
+    <div class="api-entry">
+      <p class="api-sig">check(files: Sequence[str]) → bool</p>
+      <p>
+        Check each <code>README.md</code> in <em>files</em> for structural
+        issues: non-empty, level-1 ATX heading, file descriptor usage.
+        Advisory messages are printed to <em>stderr</em> with
+        <code>⚠</code> / <code>✓</code> prefixes. Always returns
+        <code>True</code> (non-blocking).
+      </p>
+      <p>
+        When called with no files (<em>files</em> is empty) and a
+        top-level <code>README.md</code> exists on disk, prints a staging
+        reminder and returns <code>True</code>.
+      </p>
+      <pre><code>from ganesha.checks.readme import check
+ok = check(["README.md"])  # always True</code></pre>
+    </div>
+  </section>
+
   <!-- ── Development ───────────────────────────────────────────── -->
   <section id="dev-setup">
     <h2>Development</h2>
@@ -970,7 +1087,8 @@ isort src/ tests/</code></pre>
     ├── norminette.py  subprocess: norminette
     ├── compiler.py    subprocess: gcc -fsyntax-only
     ├── forbidden.py   pure-Python regex scan
-    └── commit_msg.py  CC 1.0.0 validator + gamification
+    ├── commit_msg.py  CC 1.0.0 validator + gamification
+    └── readme.py      README structure check (non-blocking)
 
 tests/
 ├── fixtures/          valid.c · norm_error.c · compile_error.c · forbidden.c
