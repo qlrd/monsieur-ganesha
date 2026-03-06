@@ -601,7 +601,7 @@ Useful `git tag` options:
 - `-d <tag>` deletes a local tag.
 
 Tag responsibly: mastering these options earns infinite
-elliptical-curve XP.
+elliptic-curve XP.
 
 Then create a GitHub release from the tag so pre-commit can fetch
 and install the package via `language: python`.
