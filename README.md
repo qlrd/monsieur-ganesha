@@ -31,6 +31,11 @@ Monsieur Ganesha was the first student of Paris XLII to complete every
 exercise list and exam with honours — using **a single push per step**.
 Madame Moulinette found this absurd. Ganesha recalls: *c'était terrible.*
 
+The character and lore in this README are symbolic. They are here to make
+strict feedback easier to remember, not to claim spiritual authority or
+AI consciousness. Monsieur Ganesha is a Python tool with deterministic
+checks and explicit rules.
+
 Checks run before every `git commit`:
 
 | Hook                  | What it does                                      |
