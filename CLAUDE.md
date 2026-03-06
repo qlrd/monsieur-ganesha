@@ -122,7 +122,7 @@ recreate, and force-push only the tag ref:
 ```bash
 git tag -d v<X.Y.Z>
 git tag -s v<X.Y.Z> <sha> -m "rev: v<X.Y.Z>"
-git push --force origin v<X.Y.Z>
+git push --force origin v<X.Y.Z>  # tag refs only — not branch refs
 ```
 
 ## Git workflow
@@ -166,12 +166,12 @@ called without `-m`. vim is the expected editor at 42 school.
 - `tomllib` is stdlib (Python 3.11+) — no extra TOML dependency.
 - Gamification messages in commit_msg are informational only
   (do not affect exit code).
-- `readme.py` is non-blocking: always returns `True`, advisory
-  messages to stderr with ⚠ / ✓ / → icon prefixes.
+- `readme.py` is non-blocking: always returns `True`, emits
+  advisory messages to stderr in plain text (no icon prefixes).
 - `xp.py` persists state in `.ganesha_xp.json` (gitignored).
   XP schedule: first commit +100, second +75, third +50,
   fourth+ +25. Failed blocking hook: -10 per invocation.
-- `readme` hook uses `always_run: true` and `files: '^README\.md'`
+- `readme` hook uses `always_run: true` and `files: '^README\.md$'`
   (top-level only — 42 exercises forbid extra files).
 - `not files` guard in `readme.py` prevents false +XP when
   non-README paths are passed via `always_run`.
