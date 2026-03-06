@@ -1,0 +1,6 @@
+[submodule "tools/francinette"]
+	path = tools/francinette
+	url = https://github.com/xicodomingues/francinette
+[submodule "tools/mini-moulinette"]
+	path = tools/mini-moulinette
+	url = https://github.com/k11q/mini-moulinette
