@@ -68,6 +68,17 @@ tests/
 Types: `feat` `fix` `docs` `style` `refactor` `perf` `test`
 `build` `ci` `chore` `revert` `init`
 
+Longer commit messages can include an optional body and footers:
+
+```text
+feat(rush03): summarize the change
+
+Explain context and impact in a wrapped body paragraph.
+
+Fixes #123
+Co-authored-by: Name <mail@example.com>
+```
+
 ## Environment
 
 Set the git editor to vim:
