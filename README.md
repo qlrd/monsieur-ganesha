@@ -634,16 +634,16 @@ submodules under `tools/`:
 | [Francinette][francinette] | `tools/francinette` | Python piscine tester |
 | [mini-moulinette][mini-moulinette] | `tools/mini-moulinette` | Local moulinette runner |
 
-After cloning, initialise the submodules with:
+After cloning, you can initialise the submodules in one step:
+
+```bash
+git clone --recurse-submodules https://github.com/qlrd/monsieur-ganesha
+```
+
+Or, if you have already cloned the repository:
 
 ```bash
 git submodule update --init --recursive
-```
-
-Alternatively, clone and initialise in one step:
-
-```bash
-git clone --recurse-submodules <repo-url>
 ```
 
 If the submodules are out of sync with the commit this repository
