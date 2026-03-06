@@ -1,7 +1,7 @@
 # monsieur-ganesha
 
 [![CI](https://github.com/qlrd/monsieur-ganesha/actions/workflows/ci.yml/badge.svg)](https://github.com/qlrd/monsieur-ganesha/actions/workflows/ci.yml)
-[![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue)](https://www.python.org/)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 <p align="center">
@@ -155,7 +155,7 @@ passes here, it will pass Moulinette on those checks.
 
 ## Requirements
 
-- Python 3.11 or later
+- Python 3.10.12 or later
 - `pre-commit` >= 3.0
 - `norminette` (for the norminette hook — `pip install norminette`)
 - `gcc` (for the compiler hook)
@@ -537,7 +537,7 @@ the only honest witness you have.
 
 ### 1. Install dependencies
 
-Python 3.11+ and [uv][uv] are required:
+Python 3.10.12+ and [uv][uv] are required:
 
 ```bash
 pip install uv   # or: curl -Ls https://astral.sh/uv/install.sh | sh
@@ -604,7 +604,7 @@ src/ganesha/
   __init__.py       public API (re-exports checks + config)
   __main__.py       python -m ganesha entry point
   cli.py            thin CLI wrapper using argparse
-  config.py         reads .ganesha.toml (tomllib — stdlib)
+  config.py         reads .ganesha.toml (tomllib/tomli)
   checks/
     norminette.py   subprocess wrapper
     compiler.py     gcc -fsyntax-only, one invocation per file

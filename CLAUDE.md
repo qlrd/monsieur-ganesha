@@ -31,7 +31,7 @@ src/ganesha/
 ├── __init__.py       public API (re-exports checks + config)
 ├── __main__.py       python -m ganesha entry point
 ├── cli.py            CLI entry point (argparse)
-├── config.py         .ganesha.toml loader (tomllib — stdlib)
+├── config.py         .ganesha.toml loader (tomllib/tomli)
 └── checks/
     ├── __init__.py
     ├── norminette.py   subprocess: norminette
@@ -85,6 +85,6 @@ called without `-m`. vim is the expected editor at 42 school.
 - Forbidden regex `\b(func)\s*\(` so `ft_func(` is not flagged.
 - `commit_msg.check` strips `#` git comment lines first.
 - `load_config` returns `Config()` when `.ganesha.toml` absent.
-- `tomllib` is stdlib (Python 3.11+) — no extra TOML dependency.
+- `load_config` uses tomllib on 3.11+ and tomli on 3.10.
 - Gamification messages in commit_msg are informational only
   (do not affect exit code).
