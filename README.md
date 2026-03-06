@@ -322,8 +322,9 @@ earn `well documented — +XP.`
 Checks performed:
 
 - **Empty file** — advisory message to add a title and description.
-- **No title** — advisory message when the file contains no ATX
-  heading (`# ...`), with a suggestion to add `# <Project Name>`.
+- **No title** — advisory message when the file contains no level-1
+  ATX heading (a line beginning with `# ` — hash followed by a
+  space), with a suggestion to add `# <Project Name>`.
 - **No file-descriptor documentation** — advisory message when the
   file does not mention which file descriptors the program uses.
   Accepted keywords: `stdin`, `stdout`, `stderr`, `STDIN_FILENO`,

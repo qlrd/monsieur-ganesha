@@ -12,8 +12,9 @@ proceeds regardless.
 Checks performed (in order)
 ----------------------------
 1. **Empty file** — advisory message to add a title and description.
-2. **Missing title** — advisory message when the file contains no ATX
-   heading (a line that starts with ``# ``).
+2. **Missing title** — advisory message when the file contains no
+   level-1 ATX heading (a line that starts with ``# `` — hash
+   followed by a space).
 3. **Missing file-descriptor documentation** — advisory message when
    the file does not mention which file descriptors the program uses.
    Accepted keywords: ``stdin``, ``stdout``, ``stderr``,
@@ -42,11 +43,14 @@ The hook always exits with code 0 so it never blocks a commit.
 Design decisions
 ----------------
 * Only files whose basename is ``README.md`` (case-sensitive) are
-  checked; other ``.md`` files are silently ignored.  This mirrors
-  the ``files`` filter in ``.pre-commit-hooks.yaml``.
-* The heading check only looks for ATX headings (``#``), not
-  Setext-style underline headings, because ATX headings are the
-  convention recommended for 42 school piscine projects.
+  checked; other ``.md`` files are silently ignored.  The pre-commit
+  hook targets only the repository-root ``README.md``
+  (``files: '^README\\.md$'``); the function accepts any path for
+  direct or test use.
+* The heading check only looks for level-1 ATX headings (``# ``
+  — hash followed by a space), not deeper levels (``##``, etc.) or
+  Setext-style underline headings.  ``# `` is the convention for
+  42 school piscine project READMEs.
 * File-descriptor detection uses a word-boundary-anchored regex so
   that incidental occurrences of "fd" in unrelated words are not
   counted.  The pattern matches the standard POSIX names as well as
