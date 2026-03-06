@@ -41,6 +41,8 @@ def test_load_config_invalid_toml_raises_value_error(tmp_path):
     try:
         load_config(tmp_path)
     except ValueError as exc:
-        assert "TOML inválido em" in str(exc)
+        message = str(exc)
+        assert "TOML" in message
+        assert ".ganesha.toml" in message
     else:
         raise AssertionError("Expected ValueError for malformed TOML")
