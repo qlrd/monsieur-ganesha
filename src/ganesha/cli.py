@@ -54,7 +54,7 @@ pre-commit invokes the same script automatically on every ``git commit``.
 import argparse
 import sys
 
-from ganesha import checks, config
+from ganesha import checks, config, xp
 
 
 def main() -> None:
@@ -121,15 +121,23 @@ def main() -> None:
     try:
         if args.command == "norminette":
             ok = checks.norminette.check(args.files)
+            if not ok:
+                xp.record_failure()
         elif args.command == "compiler":
             ok = checks.compiler.check(args.files)
+            if not ok:
+                xp.record_failure()
         elif args.command == "forbidden":
             cfg = config.load_config()
             ok = checks.forbidden.check(args.files, cfg.forbidden.functions)
+            if not ok:
+                xp.record_failure()
         elif args.command == "commit-msg":
             cfg = config.load_config()
             pattern = cfg.commit.pattern or checks.commit_msg.DEFAULT_PATTERN
             ok = checks.commit_msg.check(args.file, pattern)
+            if ok:
+                xp.record_success()
         elif args.command == "readme":
             ok = checks.readme.check(args.files)
         else:

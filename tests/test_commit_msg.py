@@ -171,7 +171,10 @@ def test_docs_with_exam01_scope_valid(tmp_path):
 
 
 def test_feat_breaking_with_ex00_scope_valid(tmp_path):
-    assert check(msg_file(tmp_path, "feat(ex00)!: rewrite with different algorithm\n")) is True
+    assert (
+        check(msg_file(tmp_path, "feat(ex00)!: rewrite with different algorithm\n"))
+        is True
+    )
 
 
 def test_bare_ex00_prefix_fails_without_custom_pattern(tmp_path):

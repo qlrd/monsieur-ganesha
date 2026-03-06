@@ -8,3 +8,4 @@ dist/
 build/
 target/
 .piscinette.toml
+.ganesha_xp.json
