@@ -20,6 +20,7 @@ packages = [{include = "ganesha", from = "src"}]
 [dependency-groups]
 dev = [
     "pytest>=8.0",
+    "pytest-cov>=5.0",
     "black>=24.0",
     "isort>=5.13",
     "pylint>=3.2",
@@ -46,3 +47,18 @@ disable = [
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src"]
+
+[tool.coverage.run]
+source = ["src/ganesha"]
+omit = [
+    # entry points exercised via subprocess in test_cli.py
+    "src/ganesha/__main__.py",
+    "src/ganesha/cli.py",
+    # subprocess-only checks — require norminette/gcc in the environment
+    "src/ganesha/checks/norminette.py",
+    "src/ganesha/checks/compiler.py",
+]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 80
