@@ -502,7 +502,12 @@ git reset --hard HEAD@{n}         # recover the exact state
 ```
 
 Never modify the reflog. Never use `git push --force` to overwrite
-a shared branch. The reflog on your machine is yours — and it is
+a shared branch. Use instead `git push --force-with-lease` or, in
+rare cases, `git push --force-if-includes` (git 2.30+). The
+`git push --force origin v<X.Y.Z>` could be used when you forgot
+to add `rev: v<X.Y.Z>` as the message on some tag.
+
+The reflog on your machine is yours — and it is
 the only honest witness you have.
 
 ---
