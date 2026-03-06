@@ -9,3 +9,5 @@ build/
 target/
 .piscinette.toml
 .ganesha_xp.json
+.coverage
+coverage.xml
