@@ -640,6 +640,19 @@ After cloning, initialise the submodules with:
 git submodule update --init --recursive
 ```
 
+Alternatively, clone and initialise in one step:
+
+```bash
+git clone --recurse-submodules <repo-url>
+```
+
+If the submodules are out of sync with the commit this repository
+tracks (e.g. after `git pull`), bring them back in sync with:
+
+```bash
+git submodule update --init --recursive
+```
+
 To update them to their latest upstream commit:
 
 ```bash
