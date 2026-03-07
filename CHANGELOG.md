@@ -18,7 +18,7 @@ project adheres to [Semantic Versioning][semver].
 - `norminette` hook: validates staged `.c` and `.h` files against the
   42 school norm by running the `norminette` CLI.
 - `c-compiler` hook: checks syntax of each staged `.c` file with
-  `gcc -Wall -Wextra -Werror -fsyntax-only`. Files are compiled
+  `cc -Wall -Wextra -Werror -fsyntax-only`. Files are compiled
   individually so all errors are reported before the hook exits.
 - `forbidden-functions` hook: scans staged `.c` files for calls to
   functions listed in `.ganesha.toml` using word-boundary regex.

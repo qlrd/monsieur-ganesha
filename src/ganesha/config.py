@@ -23,8 +23,8 @@ Typical ``.ganesha.toml`` layout::
 
 Design decisions
 ----------------
-* ``tomllib`` is part of the Python 3.11 standard library, so no
-  external TOML dependency is needed.
+* Uses ``tomllib`` on Python 3.11+ and falls back to ``tomli`` on
+  Python 3.10 so parsing stays consistent across supported versions.
 * A missing file returns :class:`Config` with defaults rather than
   raising an error: the student should not be blocked by a missing
   config file.
@@ -32,7 +32,11 @@ Design decisions
   so the problem is surfaced immediately.
 """
 
-import tomllib
+try:
+    import tomllib
+except ModuleNotFoundError:  # pragma: no cover - executed on Python 3.10
+    import tomli as tomllib  # type: ignore[no-redef]
+
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Optional
