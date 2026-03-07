@@ -79,6 +79,26 @@ git config --global core.editor vim
 The commit-message hook opens the editor when `git commit` is
 called without `-m`. vim is the expected editor at 42 school.
 
+## tACK format
+
+When posting a tACK comment on a PR, use the following template.
+Use `'''` as code-block delimiters — backtick fences require
+escaping in shell heredocs and produce rendering artifacts.
+
+```
+tACK <sha>
+
+Tested locally on Python <version> against branch tip:
+
+'''
+uv sync --dev --frozen   ✓
+black/isort/pylint       ✓
+pytest                   ✓  (<N> passed)
+'''
+
+<one-line summary of what the branch does>. Ready to merge.
+```
+
 ## Key design decisions
 
 - `cc -fsyntax-only` avoids `.o` file conflicts across files.
