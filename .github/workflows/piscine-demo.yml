@@ -1,0 +1,41 @@
+name: Piscine C00 demo
+
+# Runs the simulated student exercise checks.
+# These tests are EXPECTED TO FAIL — they demonstrate what CI
+# output looks like when student code uses forbidden functions
+# or writes non-conforming commit messages.
+
+on:
+  push:
+    branches: ["test/piscine-*"]
+  pull_request:
+    branches: [main]
+    paths:
+      - "tests/test_piscine_c00.py"
+      - "tests/fixtures/c00/**"
+
+jobs:
+  piscine-demo:
+    name: C00 exercise checks (simulated student failures)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@d4b2f3b6ecc6e67c4457f6d3e41ec42d3d0fcb86  # v5
+        with:
+          version: "0.10.8"
+
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: uv sync --dev --frozen
+
+      - name: Run C00 exercise checks
+        # Failures here are intentional: fixture files contain
+        # forbidden functions and commit messages violate CC 1.0.0.
+        run: uv run pytest tests/test_piscine_c00.py -v
