@@ -81,22 +81,61 @@ called without `-m`. vim is the expected editor at 42 school.
 
 ## tACK format
 
-When posting a tACK comment on a PR, use the following template.
-Use `'''` as code-block delimiters — backtick fences require
-escaping in shell heredocs and produce rendering artifacts.
+When posting a tACK comment on a PR, use `'''` as code-block
+delimiters — backtick fences require escaping in shell heredocs
+and produce rendering artifacts.
+
+**tACK** — confirms the branch passes locally (first test).
 
 ```
 tACK <sha>
 
-Tested locally on Python <version> against branch tip:
+Tested locally against branch tip:
 
 '''
+OS:     <uname -sr>
+cc:     <cc --version | head -1>
+Python: <python --version>
+
 uv sync --dev --frozen   ✓
-black/isort/pylint       ✓
+black --check            ✓
+isort --check-only       ✓
+pylint src/ganesha/      ✓
 pytest                   ✓  (<N> passed)
 '''
 
 <one-line summary of what the branch does>. Ready to merge.
+```
+
+**re-tACK** — re-post after author addresses review feedback.
+Same template; prefix with `re-tACK` and note what changed.
+
+```
+re-tACK <sha>
+
+Tested locally against branch tip (after <what changed>):
+
+'''
+OS:     <uname -sr>
+cc:     <cc --version | head -1>
+Python: <python --version>
+
+uv sync --dev --frozen   ✓
+black --check            ✓
+isort --check-only       ✓
+pylint src/ganesha/      ✓
+pytest                   ✓  (<N> passed)
+'''
+
+<one-line summary of what the branch does>. Ready to merge.
+```
+
+Commands to fill in the template:
+
+```bash
+uname -sr                  # OS line (kernel, no username)
+cc --version | head -1     # cc line
+python --version           # Python line
 ```
 
 ## Key design decisions

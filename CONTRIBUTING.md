@@ -20,11 +20,12 @@ git clone https://github.com/YOUR_USERNAME/monsieur-ganesha
 cd monsieur-ganesha
 ```
 
-Build the project and run the full test suite:
+Install all dependencies (including dev tools) and run the
+full test suite:
 
 ```bash
-cargo build
-cargo test
+uv sync --dev
+pytest
 ```
 
 All tests must pass before opening a pull request.
@@ -33,11 +34,21 @@ All tests must pass before opening a pull request.
 
 ## Code style
 
-- Format Rust code with `cargo fmt` before every commit.
-- Lint with `cargo clippy -- -D warnings`. No warnings are allowed.
-- Keep prose (comments, docs, Markdown) at or below 72 characters
-  per line.
-- Do not add unnecessary dependencies. Prefer `std` where possible.
+- Format with `black src/ tests/` before every commit.
+- Sort imports with `isort src/ tests/`.
+- Lint with `pylint src/ganesha/` — zero warnings allowed.
+- Keep prose (comments, docs, Markdown) at or below 72
+  characters per line.
+- Do not add unnecessary dependencies. Prefer stdlib where
+  possible.
+
+Run all checks at once:
+
+```bash
+black --check src/ tests/
+isort --check-only src/ tests/
+pylint src/ganesha/
+```
 
 ---
 
@@ -59,7 +70,7 @@ This project uses **Conventional Commits 1.0.0**.
 Examples:
 
 ```
-feat(norminette): add support for custom gcc flags
+feat(norminette): add support for custom flags
 fix: handle empty file list in forbidden check
 docs: update configuration section in README.md
 test: add integration test for commit-msg strip behaviour
@@ -75,45 +86,90 @@ git config --global core.editor vim
 
 ---
 
-## Developer Certificate of Origin
-
-All contributions must include a `Signed-off-by` footer. Add it
-automatically with:
-
-```bash
-git commit -s
-```
-
-By signing off you certify that you have the right to submit your
-work under the terms of the MIT License. See the full
-[DCO](https://developercertificate.org/).
-
----
-
 ## Adding a new hook
 
-1. Create `src/checks/new_hook.rs` with a public `check` function.
-2. Export it in `src/checks/mod.rs`:
-
-   ```rust
-   pub mod new_hook;
-   ```
-
-3. Add a `Command` variant in `src/main.rs` and wire it in `run()`.
+1. Create `src/ganesha/checks/<name>.py` with a public
+   `check` function.
+2. Export it in `src/ganesha/checks/__init__.py`.
+3. Add a subcommand in `src/ganesha/cli.py` and wire it
+   in `main()`.
 4. Register the hook in `.pre-commit-hooks.yaml`:
 
    ```yaml
    - id: new-hook
      name: New Hook
      entry: ganesha new-hook
-     language: rust
+     language: python
      files: '\.(c|h)$'
      pass_filenames: true
    ```
 
-5. Write unit tests inside the module (`#[cfg(test)]`) and an
-   integration test file in `tests/test_new_hook.rs`.
+5. Write tests in `tests/test_<name>.py`.
 6. Update `CHANGELOG.md` under `[Unreleased]`.
+
+---
+
+## Review process
+
+Maintainers review pull requests using tACK (tested ACK).
+
+**tACK** — confirms the branch passes locally (first review).
+**re-tACK** — re-posted after the author addresses feedback.
+
+Use `'''` as code-block delimiters in review comments —
+backtick fences require escaping in shell heredocs.
+
+tACK template:
+
+```
+tACK <sha>
+
+Tested locally against branch tip:
+
+'''
+OS:     <uname -sr>
+cc:     <cc --version | head -1>
+Python: <python --version>
+
+uv sync --dev --frozen   ✓
+black --check            ✓
+isort --check-only       ✓
+pylint src/ganesha/      ✓
+pytest                   ✓  (<N> passed)
+'''
+
+<one-line summary of what the branch does>. Ready to merge.
+```
+
+re-tACK template (same; note what changed after the sha):
+
+```
+re-tACK <sha>
+
+Tested locally against branch tip (after <what changed>):
+
+'''
+OS:     <uname -sr>
+cc:     <cc --version | head -1>
+Python: <python --version>
+
+uv sync --dev --frozen   ✓
+black --check            ✓
+isort --check-only       ✓
+pylint src/ganesha/      ✓
+pytest                   ✓  (<N> passed)
+'''
+
+<one-line summary of what the branch does>. Ready to merge.
+```
+
+Commands to fill in the template:
+
+```bash
+uname -sr                  # OS line (kernel, no username)
+cc --version | head -1     # cc line
+python --version           # Python line
+```
 
 ---
 
@@ -126,20 +182,37 @@ work under the terms of the MIT License. See the full
    ```
 
 2. Make your changes and add or update tests as needed.
-3. Ensure all CI checks pass locally:
+3. Ensure all checks pass locally:
 
    ```bash
-   cargo fmt --check
-   cargo clippy -- -D warnings
-   cargo test
+   uv sync --dev --frozen
+   black --check src/ tests/
+   isort --check-only src/ tests/
+   pylint src/ganesha/
+   pytest
    ```
 
 4. Push your branch and open a pull request against `main`.
-5. Describe what the PR does, why it is needed, and how it was
-   tested. Reference any related issues.
+5. Describe what the PR does, why it is needed, and how it
+   was tested. Reference any related issues.
 
-Pull requests require at least one review from a maintainer before
-merging. The CI pipeline must be green.
+Pull requests require at least one tACK from a maintainer
+before merging. The CI pipeline must be green.
+
+---
+
+## Developer Certificate of Origin
+
+All contributions must include a `Signed-off-by` footer. Add it
+automatically with:
+
+```bash
+git commit -s
+```
+
+By signing off you certify that you have the right to submit
+your work under the terms of the MIT License. See the full
+[DCO](https://developercertificate.org/).
 
 ---
 
@@ -153,8 +226,10 @@ https://github.com/qlrd/monsieur-ganesha/issues
 
 Include:
 
-- Your operating system and architecture
-- Rust version (`rustc --version`)
+- Your operating system (`uname -sr`)
+- Python version (`python --version`)
+- uv version (`uv --version`)
+- `cc` version (`cc --version | head -1`)
 - `pre-commit` version (`pre-commit --version`)
 - Exact steps to reproduce the problem
 - Expected behaviour vs. actual behaviour
@@ -164,5 +239,5 @@ Include:
 
 ## License
 
-By contributing you agree that your work will be released under the
-terms of the [MIT License](LICENSE).
+By contributing you agree that your work will be released under
+the terms of the [MIT License](LICENSE).
