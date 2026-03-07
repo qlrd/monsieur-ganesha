@@ -11,7 +11,7 @@ Subcommands
     Run the norminette check on the given files.
 
 ``ganesha compiler <files...>``
-    Run the gcc syntax check on the given files.
+    Run the cc syntax check on the given files.
 
 ``ganesha forbidden <files...>``
     Run the forbidden-function scan on the given files.  Reads the

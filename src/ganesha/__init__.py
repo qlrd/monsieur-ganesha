@@ -8,7 +8,7 @@ before every ``git commit`` in a 42 piscine repository:
     42 Norme using the official ``norminette`` tool.
 
 ``c-compiler``
-    Runs ``gcc -Wall -Wextra -Werror -fsyntax-only`` on each staged
+    Runs ``cc -Wall -Wextra -Werror -fsyntax-only`` on each staged
     ``.c`` file to catch compilation errors before they reach the
     repository.
 
