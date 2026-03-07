@@ -95,6 +95,28 @@ messages (e.g. `rev: v0.1.0`).
 Scopes: any identifier is valid; 42-school scopes such as
 `(ex00)`, `(rush00)`, `(exam01)` are explicitly supported.
 
+### Issue-closing keywords
+
+When a commit resolves a GitHub issue, include a closing keyword
+in the commit body or footer so GitHub auto-closes the issue on
+merge:
+
+```
+fix(scope): short description
+
+Closes #123
+```
+
+Accepted keywords (case-insensitive):
+`close` / `closes` / `closed`,
+`fix` / `fixes` / `fixed`,
+`resolve` / `resolves` / `resolved`.
+
+`Closes #N` is preferred — it is unambiguous and widely
+recognized. `Fixes #N` is acceptable for bug-fix commits.
+Do **not** put the closing keyword on the subject line; place it
+in the commit body or a footer so the subject stays ≤ 72 chars.
+
 ## Commit authorship and signing
 
 Every commit in this repository must be:
@@ -129,6 +151,11 @@ git push --force origin v<X.Y.Z>  # tag refs only — not branch refs
 
 ## Git workflow
 
+- **Open an issue before opening a PR.** Every change must be
+  traceable to a GitHub issue. Create the issue first, discuss
+  scope with @copilot if needed, then open a PR that references
+  it (`Closes #N` in the commit body/footer or PR description).
+  Direct PRs without a linked issue must be rejected.
 - Squash commits of the same scope and context before pushing.
   A branch should have one logical commit per concern.
 - Prefer `git push --force-with-lease` over `--force` when
