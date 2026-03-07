@@ -35,7 +35,7 @@ src/ganesha/
 └── checks/
     ├── __init__.py
     ├── norminette.py   subprocess: norminette
-    ├── compiler.py     subprocess: gcc -fsyntax-only
+    ├── compiler.py     subprocess: cc -Wall -Wextra -Werror -fsyntax-only
     ├── forbidden.py    pure Python regex scan
     └── commit_msg.py   pure Python regex + gamification
 
@@ -81,7 +81,7 @@ called without `-m`. vim is the expected editor at 42 school.
 
 ## Key design decisions
 
-- `gcc -fsyntax-only` avoids `.o` file conflicts across files.
+- `cc -fsyntax-only` avoids `.o` file conflicts across files.
 - Forbidden regex `\b(func)\s*\(` so `ft_func(` is not flagged.
 - `commit_msg.check` strips `#` git comment lines first.
 - `load_config` returns `Config()` when `.ganesha.toml` absent.

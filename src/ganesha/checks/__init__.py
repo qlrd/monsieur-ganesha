@@ -17,7 +17,7 @@ norminette
     Wraps the ``norminette`` CLI to enforce the 42 Norme on ``.c``
     and ``.h`` files.
 compiler
-    Wraps ``gcc -fsyntax-only`` to catch compilation errors before
+    Wraps ``cc -fsyntax-only`` to catch compilation errors before
     commit.
 forbidden
     Pure-Python regex scanner that detects calls to functions

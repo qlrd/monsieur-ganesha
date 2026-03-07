@@ -158,7 +158,7 @@ passes here, it will pass Moulinette on those checks.
 - Python 3.11 or later
 - `pre-commit` >= 3.0
 - `norminette` (for the norminette hook — `pip install norminette`)
-- `gcc` (for the compiler hook)
+- `cc` (typically GCC 11.4.0 on 42 school machines)
 
 ---
 
@@ -251,7 +251,7 @@ Error: SPC_BEFORE_OPERATOR  (line 3, col 5)
 
 ### c-compiler
 
-Runs `gcc -Wall -Wextra -Werror -fsyntax-only` on each staged `.c`
+Runs `cc -Wall -Wextra -Werror -fsyntax-only` on each staged `.c`
 file individually. Using `-fsyntax-only` avoids generating `.o` files
 and works correctly even when headers from other staged files are not
 yet on disk. All errors are reported before the hook exits.
@@ -607,7 +607,7 @@ src/ganesha/
   config.py         reads .ganesha.toml (tomllib — stdlib)
   checks/
     norminette.py   subprocess wrapper
-    compiler.py     gcc -fsyntax-only, one invocation per file
+    compiler.py     cc -Wall -Wextra -Werror -fsyntax-only
     forbidden.py    pure-Python regex scan, no subprocess
     commit_msg.py   CC 1.0.0 validator, gamification layer
     readme.py       README.md structural validator
