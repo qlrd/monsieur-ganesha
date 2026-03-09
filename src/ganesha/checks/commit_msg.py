@@ -16,7 +16,12 @@ The default pattern enforces `Conventional Commits 1.0.0
 Where ``type`` is one of:
 
     feat · fix · docs · style · refactor · perf · test
-    build · ci · chore · revert · init
+    build · ci · chore · revert · init · lore
+
+The ``lore`` type is for commits that add in-world narrative
+context — mascot artwork, project lore, character descriptions.
+It is not a standard CC 1.0.0 type; it is an extension accepted
+by monsieur-ganesha for project-level repositories.
 
 The ``(<scope>)`` field accepts any label, including 42-school
 exercise identifiers such as ``ex00``, ``rush00``, ``exam01``.
@@ -72,17 +77,21 @@ from pathlib import Path
 
 DEFAULT_PATTERN = (
     r"^(feat|fix|docs|style|refactor|perf|test"
-    r"|build|ci|chore|revert|init)(\([^)]+\))?(!)?: \S.*"
+    r"|build|ci|chore|revert|init|lore)(\([^)]+\))?(!)?: \S.*"
 )
-"""Conventional Commits 1.0.0 validation regex.
+"""Conventional Commits 1.0.0 validation regex (extended).
 
 Matches subjects of the form::
 
     <type>[(<scope>)][!]: <non-empty description>
 
+Accepted types: the standard CC 1.0.0 set plus ``lore``.
+``lore`` is for in-world narrative commits (mascot, character
+descriptions, project lore) used in project-level repositories.
+
 Group indices (used internally by the gamification layer):
 
-* Group 1 — commit type (e.g. ``feat``, ``fix``, ``test``).
+* Group 1 — commit type (e.g. ``feat``, ``fix``, ``test``, ``lore``).
 * Group 2 — optional scope including parentheses (e.g. ``(cli)``).
 * Group 3 — optional breaking-change marker ``!``.
 
