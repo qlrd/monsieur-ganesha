@@ -66,7 +66,11 @@ tests/
 ```
 
 Types: `feat` `fix` `docs` `style` `refactor` `perf` `test`
-`build` `ci` `chore` `revert` `init`
+`build` `ci` `chore` `revert` `init` `lore`
+
+`lore` is for in-world narrative commits (mascot artwork, character
+descriptions, project lore). It is not standard CC 1.0.0 — only
+use it in project-level repositories, not in student submissions.
 
 ## Environment
 
