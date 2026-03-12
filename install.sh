@@ -7,6 +7,7 @@ CONFIG_FILE=".pre-commit-config.yaml"
 TOML_FILE=".ganesha.toml"
 DAWON_TOML=".dawon.toml"
 DAWON_REPO="https://github.com/qlrd/dawon"
+DAWON_VERSION="v0.1.3"
 DAWON_BIN_DIR="$HOME/.local/bin"
 
 echo "==> monsieur-ganesha: configurando hooks para piscine 42..."
@@ -128,8 +129,8 @@ else
     # Fallback: cargo install (requires Rust)
     if [ "$_installed" -eq 0 ]; then
         if command -v cargo &>/dev/null; then
-            echo "  -> Instalando dawon via cargo (pode demorar)..."
-            if cargo install --git "$DAWON_REPO" 2>/dev/null; then
+            echo "  -> Instalando dawon $DAWON_VERSION via cargo (pode demorar)..."
+            if cargo install --git "$DAWON_REPO" --tag "$DAWON_VERSION" --locked 2>/dev/null; then
                 _installed=1
                 echo "  -> dawon instalado em ~/.cargo/bin/dawon"
                 echo ""
@@ -161,7 +162,7 @@ else
         fi
         echo "  Opção B — compilar com Rust:"
         echo "    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh"
-        echo "    cargo install --git $DAWON_REPO"
+        echo "    cargo install --git $DAWON_REPO --tag $DAWON_VERSION --locked"
         echo ""
     fi
 
