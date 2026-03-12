@@ -5,6 +5,7 @@ set -euo pipefail
 HOOKS_REPO="https://github.com/qlrd/monsieur-ganesha"
 CONFIG_FILE=".pre-commit-config.yaml"
 TOML_FILE=".ganesha.toml"
+DAWON_TOML=".dawon.toml"
 
 echo "==> monsieur-ganesha: configurando hooks para piscine 42..."
 
@@ -31,7 +32,7 @@ if [ ! -f "$CONFIG_FILE" ]; then
     cat > "$CONFIG_FILE" <<EOF
 repos:
   - repo: $HOOKS_REPO
-    rev: v0.1.0
+    rev: v0.1.2
     hooks:
       - id: norminette
       - id: c-compiler
@@ -65,7 +66,25 @@ else
     echo "  -> $TOML_FILE já existe, pulando."
 fi
 
-# 5. Instalar hooks no git
+# 5. Criar .dawon.toml template se não existir (companion evaluator)
+if [ ! -f "$DAWON_TOML" ]; then
+    echo "  -> Criando $DAWON_TOML (template para dawon)..."
+    cat > "$DAWON_TOML" <<'EOF'
+[project]
+# Módulo atual: C00, C01, rush00, etc.
+# module = "C00"
+
+[checks]
+# Descomente para desativar checks opcionais:
+# no_sanitizers = true
+# no_valgrind   = true
+EOF
+    echo "     Criado! Edite .dawon.toml se necessário."
+else
+    echo "  -> $DAWON_TOML já existe, pulando."
+fi
+
+# 6. Instalar hooks no git
 echo "  -> Instalando hooks no git..."
 pre-commit install
 pre-commit install --hook-type commit-msg
@@ -77,3 +96,4 @@ echo "Próximos passos:"
 echo "  1. Edite .ganesha.toml com as funções proibidas do seu subject"
 echo "  2. Teste: git add . && git commit -m 'feat: minha implementação'"
 echo "  3. Check manual: pre-commit run --all-files"
+echo "  4. Antes de dar push: dawon check --path . (se dawon estiver instalado)"
