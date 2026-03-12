@@ -23,6 +23,9 @@ def test_load_config_parses_toml_file(tmp_path):
                 "[commit]",
                 'pattern = "^(ex|rush|exam)\\\\d+: .+"',
                 "",
+                "[docstring]",
+                "strict = true",
+                "",
             ]
         ),
         encoding="utf-8",
@@ -31,6 +34,7 @@ def test_load_config_parses_toml_file(tmp_path):
     assert cfg.project.name == "C04"
     assert cfg.forbidden.functions == ["printf", "malloc"]
     assert cfg.commit.pattern == "^(ex|rush|exam)\\d+: .+"
+    assert cfg.docstring.strict is True
 
 
 def test_load_config_invalid_toml_raises_value_error(tmp_path):

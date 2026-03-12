@@ -22,6 +22,10 @@ Subcommands
     Validate the commit message stored in *file*.  Reads the optional
     custom pattern from ``.ganesha.toml``.
 
+``ganesha docstring <files...>``
+    Validate piscine-style C function docstrings.  Reads optional
+    ``[docstring] strict`` from ``.ganesha.toml``.
+
 ``ganesha readme <files...>``
     Check README.md files for common issues and propose corrections.
 
@@ -46,6 +50,7 @@ After installing with ``uv sync`` or ``pip install -e .`` the
     ganesha compiler    ex00/ft_putchar.c
     ganesha forbidden   ex00/ft_putchar.c
     ganesha commit-msg  .git/COMMIT_EDITMSG
+    ganesha docstring   ex00/ft_putchar.c
     ganesha readme      README.md
 
 pre-commit invokes the same script automatically on every ``git commit``.
@@ -110,6 +115,12 @@ def main() -> None:
         help="caminho para o arquivo com a mensagem de commit",
     )
 
+    p_doc = sub.add_parser(
+        "docstring",
+        help="valida docstrings de funções C no formato da piscine",
+    )
+    p_doc.add_argument("files", nargs="*")
+
     p_readme = sub.add_parser(
         "readme",
         help="verifica README.md e propõe correções",
@@ -138,6 +149,9 @@ def main() -> None:
             ok = checks.commit_msg.check(args.file, pattern)
             if ok:
                 xp.record_success()
+        elif args.command == "docstring":
+            cfg = config.load_config()
+            ok = checks.docstring.check(args.files, strict=cfg.docstring.strict)
         elif args.command == "readme":
             ok = checks.readme.check(args.files)
         else:

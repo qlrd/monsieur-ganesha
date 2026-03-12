@@ -1,6 +1,6 @@
 """Monsieur Ganesha — pre-commit hooks for 42 school piscine.
 
-This package provides four pre-commit hooks that run automatically
+This package provides pre-commit hooks that run automatically
 before every ``git commit`` in a 42 piscine repository:
 
 ``norminette``
@@ -16,6 +16,10 @@ before every ``git commit`` in a 42 piscine repository:
     Scans staged ``.c`` files for calls to functions listed in the
     ``[forbidden] functions`` key of ``.ganesha.toml``.
 
+``docstring-check``
+    Validates piscine-style docstring blocks for non-static C
+    function definitions.
+
 ``commit-message``
     Validates the commit message subject against Conventional Commits
     1.0.0 (or a custom pattern) and rejects non-conforming messages
@@ -26,8 +30,8 @@ Public API
 The package re-exports two top-level namespaces:
 
 :mod:`ganesha.checks`
-    The four check modules: ``norminette``, ``compiler``,
-    ``forbidden``, ``commit_msg``.
+    The check modules: ``norminette``, ``compiler``, ``forbidden``,
+    ``docstring``, ``commit_msg``, ``readme``.
 
 :mod:`ganesha.config`
     :func:`~ganesha.config.load_config` and the

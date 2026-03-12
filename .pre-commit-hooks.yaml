@@ -38,3 +38,11 @@
   files: '^README\.md$'
   pass_filenames: true
   always_run: true
+
+- id: docstring-check
+  name: Docstring Check
+  description: Valida docstrings de funções C no padrão da piscine
+  entry: ganesha docstring
+  language: python
+  files: '\.c$'
+  pass_filenames: true
