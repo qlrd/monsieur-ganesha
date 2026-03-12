@@ -8,7 +8,7 @@
  * # Example
  *
  * ```c
- * intmain(void)
+ * int main(void)
  * {
  * ft_putnbr_base(42, "0123456789");
  * return (0);
@@ -17,8 +17,8 @@
  *
  * @param[nbr]: number to print.
  */
-voidft_putnbr_base(int nbr, char *base)
+void ft_putnbr_base(int nbr, char *base)
 {
-(void)nbr;
-(void)base;
+	(void)nbr;
+	(void)base;
 }

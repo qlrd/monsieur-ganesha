@@ -11,7 +11,7 @@
  *
  * @param[s]: string to print.
  */
-voidft_putendl(char *s)
+void ft_putendl(char *s)
 {
-(void)s;
+	(void)s;
 }

@@ -4,23 +4,23 @@
  * # Example
  *
  * ```c
- * intmain(void)
+ * int main(void)
  * {
- * intlen;
+ * 	int	len;
  *
- * len = ft_strlen("abc");
- * return (len);
+ * 	len = ft_strlen("abc");
+ * 	return (len);
  * }
  * ```
  *
  * @param[str]: input string.
  */
-intft_strlen(char *str)
+int ft_strlen(char *str)
 {
-intlen;
+	int	len;
 
-len = 0;
-while (str[len])
-len++;
-return (len);
+	len = 0;
+	while (str[len])
+		len++;
+	return (len);
 }

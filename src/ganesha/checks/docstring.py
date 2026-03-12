@@ -5,7 +5,7 @@ non-static C function definitions against the piscine docstring format:
 
 * A preceding ``/* ... */`` block comment is required.
 * The comment must include ``# About`` with non-empty content.
-* The comment must include ``# Example`` with a fenced `````c`` block.
+* The comment must include ``# Example`` with a fenced C code block.
 * The example code block must contain a ``main``-style snippet.
 * ``@param[name]: ...`` entries are compared to function parameters.
 
