@@ -1,0 +1,51 @@
+name: Claude review
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  id-token: write
+  pull-requests: write
+
+jobs:
+  review:
+    name: Claude Code automated review
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4
+        with:
+          fetch-depth: 1
+
+      - name: Run Claude Code review harness
+        uses: anthropics/claude-code-action@26ec041249acb0a944c0a47b6c0c13f05dbc5b44  # v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            REPO: ${{ github.repository }}
+            PR NUMBER: ${{ github.event.pull_request.number }}
+
+            Review this pull request for monsieur-ganesha.
+
+            Follow conventions from CLAUDE.md in the repository root,
+            including lint/test standards and commit-message rules.
+
+            Focus on:
+            - Regex edge cases in checks (forbidden functions,
+              commit-message validation).
+            - Subprocess error handling (norminette/compiler checks).
+            - CLI behavior and exit-code regressions.
+            - Test coverage and docs updates when behavior changes.
+
+            Post feedback as GitHub PR comments (inline when specific).
+            If no issues are found, post a short summary comment.
+          claude_args: |
+            --allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*)"
