@@ -43,6 +43,7 @@ Checks run before every `git commit`:
 | `norminette`          | Runs norminette on staged `.c` and `.h` files     |
 | `c-compiler`          | Compiles each `.c` with `-Wall -Wextra -Werror`   |
 | `forbidden-functions` | Blocks calls to configurable forbidden functions  |
+| `docstring-check`     | Validates piscine-style C function docstrings     |
 | `commit-message`      | Enforces Conventional Commits 1.0.0 format        |
 | `readme`              | Checks `README.md` and proposes corrections       |
 
@@ -59,6 +60,7 @@ Checks run before every `git commit`:
   - [norminette](#norminette)
   - [c-compiler](#c-compiler)
   - [forbidden-functions](#forbidden-functions)
+  - [docstring-check](#docstring-check)
   - [commit-message](#commit-message)
   - [readme](#readme)
 - [Commit format](#commit-format)
@@ -191,6 +193,7 @@ repos:
       - id: norminette
       - id: c-compiler
       - id: forbidden-functions
+      - id: docstring-check
       - id: commit-message
       - id: readme
 ```
@@ -221,10 +224,15 @@ functions = ["printf", "malloc", "realloc", "free", "calloc"]
 # Default: Conventional Commits 1.0.0.
 # Uncomment to use the 42-school format instead:
 # pattern = "^(ex|rush|exam)\\d+: .+"
+
+[docstring]
+# Advisory by default. Set true to block on docstring errors.
+strict = false
 ```
 
 If `.ganesha.toml` is absent all hooks run with safe defaults:
-no functions are blocked and the built-in commit pattern is used.
+no functions are blocked, docstring stays advisory, and the built-in
+commit pattern is used.
 
 ---
 
@@ -302,6 +310,21 @@ Forbidden Functions.............................................Failed
 main.c:5: forbidden function 'malloc'
 main.c:6: forbidden function 'printf'
 ```
+
+### docstring-check
+
+Scans every staged non-static `.c` function definition and validates
+that a preceding block comment follows the piscine format:
+
+- `# About` section with non-empty description (**error** if missing).
+- `# Example` section with fenced ````c ... ```` code containing
+  `main(...)` usage (**error** if missing or malformed).
+- One `@param[name]:` entry per declared parameter (**warning** if
+  missing or mismatched).
+
+By default this hook is **non-blocking** (advisory).  Set
+`[docstring] strict = true` in `.ganesha.toml` to make docstring
+errors block the commit.
 
 ### commit-message
 
@@ -452,6 +475,7 @@ Run a single hook by id:
 ```bash
 pre-commit run norminette --all-files
 pre-commit run forbidden-functions --all-files
+pre-commit run docstring-check --all-files
 pre-commit run readme --all-files
 ```
 
@@ -461,6 +485,7 @@ Invoke the script directly:
 ganesha norminette  ex00/ft_putchar.c header.h
 ganesha compiler    ex00/ft_putchar.c
 ganesha forbidden   ex00/ft_putchar.c
+ganesha docstring   ex00/ft_putchar.c
 ganesha commit-msg  .git/COMMIT_EDITMSG
 ganesha readme      README.md
 ```
@@ -611,14 +636,17 @@ src/ganesha/
     norminette.py   subprocess wrapper
     compiler.py     cc -Wall -Wextra -Werror -fsyntax-only
     forbidden.py    pure-Python regex scan, no subprocess
+    docstring.py    piscine C docstring validator
     commit_msg.py   CC 1.0.0 validator, gamification layer
     readme.py       README.md structural validator
 tests/
   test_forbidden.py   integration tests via lib API + tmp_path
+  test_docstring.py   integration tests via lib API + fixtures
   test_commit_msg.py  integration tests via lib API + tmp_path
   test_readme.py      integration tests via lib API + tmp_path
   test_cli.py         CLI tests via subprocess
-  fixtures/           valid.c  norm_error.c  compile_error.c  forbidden.c
+  fixtures/           valid.c  norm_error.c  compile_error.c
+                      forbidden.c  docstring_*.c
 ```
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the full contribution

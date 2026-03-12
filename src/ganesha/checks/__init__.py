@@ -1,6 +1,6 @@
 """Check modules for Monsieur Ganesha.
 
-This package exposes the five pre-commit check modules as a flat
+This package exposes the pre-commit check modules as a flat
 namespace so that the CLI and tests can import them uniformly::
 
     from ganesha import checks
@@ -8,6 +8,7 @@ namespace so that the CLI and tests can import them uniformly::
     checks.norminette.check(files)
     checks.compiler.check(files)
     checks.forbidden.check(files, forbidden_list)
+    checks.docstring.check(files, strict=False)
     checks.commit_msg.check(file_path, pattern)
     checks.readme.check(files)
 
@@ -22,6 +23,8 @@ compiler
 forbidden
     Pure-Python regex scanner that detects calls to functions
     forbidden by the current module's ``.ganesha.toml``.
+docstring
+    Validates piscine-style function docstrings in ``.c`` files.
 commit_msg
     Validates the commit message subject against Conventional Commits
     1.0.0 (or a custom pattern) and applies a gamification layer.
@@ -30,6 +33,20 @@ readme
     prints actionable correction proposals.
 """
 
-from ganesha.checks import commit_msg, compiler, forbidden, norminette, readme
+from ganesha.checks import (
+    commit_msg,
+    compiler,
+    docstring,
+    forbidden,
+    norminette,
+    readme,
+)
 
-__all__ = ["commit_msg", "compiler", "forbidden", "norminette", "readme"]
+__all__ = [
+    "commit_msg",
+    "compiler",
+    "docstring",
+    "forbidden",
+    "norminette",
+    "readme",
+]

@@ -107,6 +107,18 @@ class CommitConfig:
 
 
 @dataclass
+class DocstringConfig:
+    """Docstring-check configuration from the ``[docstring]`` TOML table.
+
+    Attributes:
+        strict: Whether docstring errors should block commits.
+            Defaults to ``False`` so the hook behaves in advisory mode.
+    """
+
+    strict: bool = False
+
+
+@dataclass
 class Config:
     """Root configuration object returned by :func:`load_config`.
 
@@ -120,11 +132,13 @@ class Config:
         forbidden: Forbidden-function list from the ``[forbidden]``
             table.
         commit: Commit-message pattern from the ``[commit]`` table.
+        docstring: Docstring hook mode from the ``[docstring]`` table.
     """
 
     project: ProjectConfig = field(default_factory=ProjectConfig)
     forbidden: ForbiddenConfig = field(default_factory=ForbiddenConfig)
     commit: CommitConfig = field(default_factory=CommitConfig)
+    docstring: DocstringConfig = field(default_factory=DocstringConfig)
 
 
 def load_config(root: Optional[Path] = None) -> Config:
@@ -189,4 +203,12 @@ def load_config(root: Optional[Path] = None) -> Config:
     commit = CommitConfig(
         pattern=data.get("commit", {}).get("pattern"),
     )
-    return Config(project=project, forbidden=forbidden, commit=commit)
+    docstring = DocstringConfig(
+        strict=data.get("docstring", {}).get("strict", False),
+    )
+    return Config(
+        project=project,
+        forbidden=forbidden,
+        commit=commit,
+        docstring=docstring,
+    )

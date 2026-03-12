@@ -4,11 +4,12 @@ import subprocess
 import sys
 
 
-def run(*args: str) -> subprocess.CompletedProcess:
+def run(*args: str, cwd: str | None = None) -> subprocess.CompletedProcess:
     return subprocess.run(
         [sys.executable, "-m", "ganesha", *args],
         capture_output=True,
         text=True,
+        cwd=cwd,
     )
 
 
@@ -69,6 +70,27 @@ def test_compiler_no_files_passes():
 def test_norminette_no_files_passes():
     result = run("norminette")
     assert result.returncode == 0
+
+
+def test_docstring_no_files_passes():
+    result = run("docstring")
+    assert result.returncode == 0
+
+
+def test_docstring_non_strict_passes_on_errors(tmp_path):
+    p = tmp_path / "sample.c"
+    p.write_text("int\tft_no_doc(void)\n{\n\treturn (0);\n}\n", encoding="utf-8")
+    result = run("docstring", str(p), cwd=str(tmp_path))
+    assert result.returncode == 0
+
+
+def test_docstring_strict_fails_on_errors(tmp_path):
+    p = tmp_path / "sample.c"
+    p.write_text("int\tft_no_doc(void)\n{\n\treturn (0);\n}\n", encoding="utf-8")
+    (tmp_path / ".ganesha.toml").write_text("[docstring]\nstrict = true\n")
+    result = run("docstring", str(p), cwd=str(tmp_path))
+    assert result.returncode == 1
+    assert "missing docstring block" in result.stderr
 
 
 # --- help ---
