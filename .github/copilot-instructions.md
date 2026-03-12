@@ -70,6 +70,8 @@ The config file is always `.ganesha.toml`.  Never write
   appending `(#N)` to the subject line or adding `Closes #N` /
   `Refs #N` in the commit body footer
 - All commits must include `Signed-off-by:` (DCO)
+- When force-pushing a branch, always use `--force-with-lease` — never
+  bare `--force`
 
 ---
 
