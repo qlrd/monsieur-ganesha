@@ -1,7 +1,7 @@
 """Monsieur Ganesha — pre-commit hooks for 42 school piscine.
 
-This package provides four pre-commit hooks that run automatically
-before every ``git commit`` in a 42 piscine repository:
+This package provides hooks that run automatically in a 42 piscine
+repository:
 
 ``norminette``
     Verifies that staged ``.c`` and ``.h`` files comply with the
@@ -21,13 +21,17 @@ before every ``git commit`` in a 42 piscine repository:
     1.0.0 (or a custom pattern) and rejects non-conforming messages
     with a terse ``REJECTED.`` to encourage self-discovery.
 
+``dawon-check`` (optional)
+    Runs ``dawon check --path`` before ``git push`` when ``dawon`` is
+    installed on the system.
+
 Public API
 ----------
 The package re-exports two top-level namespaces:
 
 :mod:`ganesha.checks`
-    The four check modules: ``norminette``, ``compiler``,
-    ``forbidden``, ``commit_msg``.
+    The check modules: ``norminette``, ``compiler``, ``forbidden``,
+    ``commit_msg``, ``readme``, ``dawon``.
 
 :mod:`ganesha.config`
     :func:`~ganesha.config.load_config` and the

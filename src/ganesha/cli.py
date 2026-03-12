@@ -25,6 +25,10 @@ Subcommands
 ``ganesha readme <files...>``
     Check README.md files for common issues and propose corrections.
 
+``ganesha dawon-check``
+    Run optional companion ``dawon check`` in the configured project
+    module before pushing.
+
 Exit codes
 ----------
 ``0``
@@ -116,6 +120,11 @@ def main() -> None:
     )
     p_readme.add_argument("files", nargs="*")
 
+    sub.add_parser(
+        "dawon-check",
+        help="executa dawon check no pre-push (se dawon existir no PATH)",
+    )
+
     args = parser.parse_args()
 
     try:
@@ -140,6 +149,9 @@ def main() -> None:
                 xp.record_success()
         elif args.command == "readme":
             ok = checks.readme.check(args.files)
+        elif args.command == "dawon-check":
+            cfg = config.load_config()
+            ok = checks.dawon.check(cfg.project.module)
         else:
             ok = False
     except ValueError as e:

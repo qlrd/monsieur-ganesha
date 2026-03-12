@@ -37,7 +37,8 @@ src/ganesha/
     ├── norminette.py   subprocess: norminette
     ├── compiler.py     subprocess: cc -Wall -Wextra -Werror -fsyntax-only
     ├── forbidden.py    pure Python regex scan
-    └── commit_msg.py   pure Python regex + gamification
+    ├── commit_msg.py   pure Python regex + gamification
+    └── dawon.py        optional pre-push wrapper: dawon check --path
 
 tests/
 ├── fixtures/           valid.c  norm_error.c  compile_error.c  forbidden.c

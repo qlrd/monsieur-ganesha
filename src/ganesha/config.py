@@ -12,6 +12,8 @@ Typical ``.ganesha.toml`` layout::
 
     [project]
     name = "C00"
+    # Optional path for companion pre-push checks.
+    # module = "C00"
 
     [forbidden]
     functions = ["printf", "malloc", "free"]
@@ -53,9 +55,13 @@ class ProjectConfig:
             or ``"rush01"``.  Used only for informational purposes;
             no hook behaviour depends on it.  Defaults to ``None``
             when the key is absent from the configuration file.
+        module: Optional relative path used by companion tools that
+            operate on a specific project subdirectory.  Defaults to
+            ``None`` when the key is absent.
     """
 
     name: Optional[str] = None
+    module: Optional[str] = None
 
 
 @dataclass
@@ -182,6 +188,7 @@ def load_config(root: Optional[Path] = None) -> Config:
 
     project = ProjectConfig(
         name=data.get("project", {}).get("name"),
+        module=data.get("project", {}).get("module"),
     )
     forbidden = ForbiddenConfig(
         functions=data.get("forbidden", {}).get("functions", []),

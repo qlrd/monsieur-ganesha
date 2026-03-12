@@ -45,6 +45,7 @@ Checks run before every `git commit`:
 | `forbidden-functions` | Blocks calls to configurable forbidden functions  |
 | `commit-message`      | Enforces Conventional Commits 1.0.0 format        |
 | `readme`              | Checks `README.md` and proposes corrections       |
+| `dawon-check`         | Optional pre-push `dawon check` companion run     |
 
 ---
 
@@ -61,6 +62,7 @@ Checks run before every `git commit`:
   - [forbidden-functions](#forbidden-functions)
   - [commit-message](#commit-message)
   - [readme](#readme)
+  - [dawon-check (optional pre-push)](#dawon-check-optional-pre-push)
 - [Commit format](#commit-format)
 - [Running checks manually](#running-checks-manually)
 - [Development](#development)
@@ -105,6 +107,7 @@ python -m ganesha compiler    src/*.c
 python -m ganesha forbidden   src/*.c
 python -m ganesha commit-msg  .git/COMMIT_EDITMSG
 python -m ganesha readme      README.md
+python -m ganesha dawon-check
 ```
 
 Exit codes: `0` pass · `1` check failed · `2` internal error (e.g. malformed `.ganesha.toml`).
@@ -122,6 +125,8 @@ Create `.ganesha.toml` at the root of your piscine repository:
 ```toml
 [project]
 name = "C04"                      # current module or exercise
+# optional path for pre-push dawon check
+# module = "C04"
 
 [forbidden]
 # List every function not allowed by the subject PDF.
@@ -193,6 +198,8 @@ repos:
       - id: forbidden-functions
       - id: commit-message
       - id: readme
+      # Optional pre-push companion check:
+      # - id: dawon-check
 ```
 
 Then activate the hooks:
@@ -200,6 +207,7 @@ Then activate the hooks:
 ```bash
 pre-commit install
 pre-commit install --hook-type commit-msg
+pre-commit install --hook-type pre-push
 ```
 
 ---
@@ -212,6 +220,8 @@ Place `.ganesha.toml` at the root of your piscine repository:
 [project]
 # Current module name (C00, C01, rush01, etc.)
 name = "C00"
+# Optional path used by the dawon pre-push hook.
+# module = "C00"
 
 [forbidden]
 # Functions banned for this subject. Check the subject PDF.
@@ -367,6 +377,15 @@ README Check....................................................Passed
   README.md: well documented — +XP.
 ```
 
+### dawon-check (optional pre-push)
+
+Runs `dawon check --path <module>` before `git push`, where `<module>`
+comes from `[project] module` in `.ganesha.toml`.
+
+- If `dawon` is not on `$PATH`, the hook silently skips.
+- If `dawon check` fails, the push is blocked.
+- If `[project] module` is absent, the hook uses `--path .`.
+
 ---
 
 ## Commit format
@@ -463,6 +482,7 @@ ganesha compiler    ex00/ft_putchar.c
 ganesha forbidden   ex00/ft_putchar.c
 ganesha commit-msg  .git/COMMIT_EDITMSG
 ganesha readme      README.md
+ganesha dawon-check
 ```
 
 Skip all hooks for a single commit (use with care):
