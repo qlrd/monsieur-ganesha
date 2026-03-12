@@ -111,13 +111,13 @@ else
         _url="https://github.com/qlrd/dawon/releases/latest/download/$_asset"
         mkdir -p "$DAWON_BIN_DIR"
         if command -v curl &>/dev/null; then
-            if curl -fsSL "$_url" -o "$DAWON_BIN_DIR/dawon" 2>/dev/null; then
+            if curl -fsSL "$_url" -o "$DAWON_BIN_DIR/dawon"; then
                 chmod +x "$DAWON_BIN_DIR/dawon"
                 _installed=1
                 echo "  -> dawon instalado em $DAWON_BIN_DIR/dawon"
             fi
         elif command -v wget &>/dev/null; then
-            if wget -qO "$DAWON_BIN_DIR/dawon" "$_url" 2>/dev/null; then
+            if wget -nv -O "$DAWON_BIN_DIR/dawon" "$_url"; then
                 chmod +x "$DAWON_BIN_DIR/dawon"
                 _installed=1
                 echo "  -> dawon instalado em $DAWON_BIN_DIR/dawon"
@@ -129,7 +129,7 @@ else
     if [ "$_installed" -eq 0 ]; then
         if command -v cargo &>/dev/null; then
             echo "  -> Instalando dawon via cargo (pode demorar)..."
-            if cargo install --git "$DAWON_REPO" 2>/dev/null; then
+            if cargo install --git "$DAWON_REPO"; then
                 _installed=1
                 echo "  -> dawon instalado em ~/.cargo/bin/dawon"
                 echo ""
