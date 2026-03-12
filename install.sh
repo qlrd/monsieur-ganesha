@@ -53,6 +53,8 @@ if [ ! -f "$TOML_FILE" ]; then
 [project]
 # Nome do módulo atual (C00, C01, rush01, etc.)
 name = "C00"
+# Caminho opcional para dawon-check no pre-push
+# module = "C00"
 
 [forbidden]
 # Funções proibidas para este subject — consulte o PDF

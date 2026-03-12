@@ -1,6 +1,6 @@
 """Check modules for Monsieur Ganesha.
 
-This package exposes the five pre-commit check modules as a flat
+This package exposes the check modules as a flat
 namespace so that the CLI and tests can import them uniformly::
 
     from ganesha import checks
@@ -10,6 +10,7 @@ namespace so that the CLI and tests can import them uniformly::
     checks.forbidden.check(files, forbidden_list)
     checks.commit_msg.check(file_path, pattern)
     checks.readme.check(files)
+    checks.dawon.check(module_path)
 
 Modules
 -------
@@ -28,8 +29,10 @@ commit_msg
 readme
     Validates ``README.md`` files for common structural issues and
     prints actionable correction proposals.
+dawon
+    Optional pre-push wrapper around ``dawon check --path``.
 """
 
-from ganesha.checks import commit_msg, compiler, forbidden, norminette, readme
+from ganesha.checks import commit_msg, compiler, dawon, forbidden, norminette, readme
 
-__all__ = ["commit_msg", "compiler", "forbidden", "norminette", "readme"]
+__all__ = ["commit_msg", "compiler", "dawon", "forbidden", "norminette", "readme"]

@@ -16,6 +16,7 @@ def test_load_config_parses_toml_file(tmp_path):
             [
                 "[project]",
                 'name = "C04"',
+                'module = "C04"',
                 "",
                 "[forbidden]",
                 'functions = ["printf", "malloc"]',
@@ -29,6 +30,7 @@ def test_load_config_parses_toml_file(tmp_path):
     )
     cfg = load_config(tmp_path)
     assert cfg.project.name == "C04"
+    assert cfg.project.module == "C04"
     assert cfg.forbidden.functions == ["printf", "malloc"]
     assert cfg.commit.pattern == "^(ex|rush|exam)\\d+: .+"
 

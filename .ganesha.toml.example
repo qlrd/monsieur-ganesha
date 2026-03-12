@@ -1,6 +1,8 @@
 [project]
 # Nome do módulo atual (C00, C01, rush01, etc.)
 name = "C00"
+# Caminho do módulo para checks de pre-push (opcional)
+# module = "C00"
 
 [forbidden]
 # Liste aqui as funções proibidas para este módulo.

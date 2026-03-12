@@ -38,3 +38,11 @@
   files: '^README\.md$'
   pass_filenames: true
   always_run: true
+
+- id: dawon-check
+  name: Dawon Check
+  description: Executa dawon check antes do push quando dawon está disponível
+  entry: ganesha dawon-check
+  language: python
+  pass_filenames: false
+  stages: [pre-push]
