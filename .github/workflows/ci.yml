@@ -58,7 +58,7 @@ jobs:
           fail_ci_if_error: false
 
   debian-stable-py310:
-    name: Debian stable / py3.10 tests
+    name: Debian stable / py3.10 — pytest only
     runs-on: ubuntu-latest
     container: debian:stable
 
@@ -70,10 +70,10 @@ jobs:
           apt-get update
           apt-get install -y python3 python3-pip python3-venv
 
-      - name: Install package and pytest
+      - name: Install package and test tools
         run: |
           python3 -m venv .venv
-          .venv/bin/pip install -e . pytest
+          .venv/bin/pip install -e . pytest norminette
 
       - name: Run tests
         run: .venv/bin/pytest -q
