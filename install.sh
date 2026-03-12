@@ -6,6 +6,8 @@ HOOKS_REPO="https://github.com/qlrd/monsieur-ganesha"
 CONFIG_FILE=".pre-commit-config.yaml"
 TOML_FILE=".ganesha.toml"
 DAWON_TOML=".dawon.toml"
+DAWON_REPO="https://github.com/qlrd/dawon"
+DAWON_BIN_DIR="$HOME/.local/bin"
 
 echo "==> monsieur-ganesha: configurando hooks para piscine 42..."
 
@@ -84,7 +86,87 @@ else
     echo "  -> $DAWON_TOML já existe, pulando."
 fi
 
-# 6. Instalar hooks no git
+# 6. Instalar dawon (companion evaluator)
+echo "  -> Verificando dawon..."
+if command -v dawon &>/dev/null; then
+    echo "  -> dawon já instalado: $(dawon --version 2>/dev/null || echo 'versão desconhecida')"
+else
+    # Detect OS/arch for future pre-built binary downloads (issue qlrd/dawon#64)
+    _os="$(uname -s)"
+    _arch="$(uname -m)"
+    _asset=""
+    if [ "$_os" = "Linux" ] && [ "$_arch" = "x86_64" ]; then
+        _asset="dawon-linux-x86_64"
+    elif [ "$_os" = "Linux" ] && [ "$_arch" = "aarch64" ]; then
+        _asset="dawon-linux-aarch64"
+    elif [ "$_os" = "Darwin" ] && [ "$_arch" = "arm64" ]; then
+        _asset="dawon-macos-aarch64"
+    elif [ "$_os" = "Darwin" ] && [ "$_arch" = "x86_64" ]; then
+        _asset="dawon-macos-x86_64"
+    fi
+
+    _installed=0
+    # Try pre-built binary first (available once qlrd/dawon#64 is merged)
+    if [ -n "$_asset" ]; then
+        _url="https://github.com/qlrd/dawon/releases/latest/download/$_asset"
+        mkdir -p "$DAWON_BIN_DIR"
+        if command -v curl &>/dev/null; then
+            if curl -fsSL "$_url" -o "$DAWON_BIN_DIR/dawon" 2>/dev/null; then
+                chmod +x "$DAWON_BIN_DIR/dawon"
+                _installed=1
+                echo "  -> dawon instalado em $DAWON_BIN_DIR/dawon"
+            fi
+        elif command -v wget &>/dev/null; then
+            if wget -qO "$DAWON_BIN_DIR/dawon" "$_url" 2>/dev/null; then
+                chmod +x "$DAWON_BIN_DIR/dawon"
+                _installed=1
+                echo "  -> dawon instalado em $DAWON_BIN_DIR/dawon"
+            fi
+        fi
+    fi
+
+    # Fallback: cargo install (requires Rust)
+    if [ "$_installed" -eq 0 ]; then
+        if command -v cargo &>/dev/null; then
+            echo "  -> Instalando dawon via cargo (pode demorar)..."
+            if cargo install --git "$DAWON_REPO" 2>/dev/null; then
+                _installed=1
+                echo "  -> dawon instalado em ~/.cargo/bin/dawon"
+                echo ""
+                echo "  ATENÇÃO: adicione ~/.cargo/bin ao PATH se ainda não estiver:"
+                echo "    echo 'export PATH=\"\$HOME/.cargo/bin:\$PATH\"' >> ~/.zshrc"
+            fi
+        fi
+    fi
+
+    if [ "$_installed" -eq 0 ]; then
+        echo ""
+        echo "  AVISO: dawon não foi instalado automaticamente."
+        echo "  Para instalar manualmente, escolha uma opção:"
+        echo ""
+        echo "  Opção A — binário pré-compilado (recomendado):"
+        echo "    mkdir -p ~/.local/bin"
+        echo "    curl -fsSL https://github.com/qlrd/dawon/releases/latest/download/dawon-linux-x86_64 \\"
+        echo "      -o ~/.local/bin/dawon && chmod +x ~/.local/bin/dawon"
+        echo ""
+        echo "  Opção B — compilar com Rust:"
+        echo "    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh"
+        echo "    cargo install --git $DAWON_REPO"
+        echo ""
+    fi
+
+    # Advise PATH if dawon was placed in ~/.local/bin
+    if [ "$_installed" -eq 1 ] && [[ ":$PATH:" != *":$DAWON_BIN_DIR:"* ]]; then
+        echo ""
+        echo "  ATENÇÃO: $DAWON_BIN_DIR não está no PATH."
+        echo "  Adicione ao seu shell (zsh/bash):"
+        echo "    echo 'export PATH=\"\$HOME/.local/bin:\$PATH\"' >> ~/.zshrc"
+        echo "  Depois recarregue: source ~/.zshrc"
+        echo ""
+    fi
+fi
+
+# 7. Instalar hooks no git
 echo "  -> Instalando hooks no git..."
 pre-commit install
 pre-commit install --hook-type commit-msg
@@ -96,4 +178,4 @@ echo "Próximos passos:"
 echo "  1. Edite .ganesha.toml com as funções proibidas do seu subject"
 echo "  2. Teste: git add . && git commit -m 'feat: minha implementação'"
 echo "  3. Check manual: pre-commit run --all-files"
-echo "  4. Antes de dar push: dawon check --path . (se dawon estiver instalado)"
+echo "  4. Antes de dar push: dawon check --path ."
