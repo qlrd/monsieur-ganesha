@@ -41,8 +41,8 @@ Checks run before every `git commit`:
 | Hook                  | What it does                                      |
 |-----------------------|---------------------------------------------------|
 | `norminette`          | Runs norminette on staged `.c` and `.h` files     |
-| `c-compiler`          | Compiles each `.c` with `-Wall -Wextra -Werror`   |
-| `forbidden-functions` | Blocks calls to configurable forbidden functions  |
+| `c-compiler`          | Compiles C/C++ with `-Wall -Wextra -Werror`       |
+| `forbidden-functions` | Blocks forbidden calls (piscine mode only)        |
 | `commit-message`      | Enforces Conventional Commits 1.0.0 format        |
 | `readme`              | Checks `README.md` and proposes corrections       |
 
@@ -212,6 +212,8 @@ Place `.ganesha.toml` at the root of your piscine repository:
 [project]
 # Current module name (C00, C01, rush01, etc.)
 name = "C00"
+# Project mode: "piscine" (default) or "general"
+mode = "piscine"
 
 [forbidden]
 # Functions banned for this subject. Check the subject PDF.
@@ -221,6 +223,11 @@ functions = ["printf", "malloc", "realloc", "free", "calloc"]
 # Default: Conventional Commits 1.0.0.
 # Uncomment to use the 42-school format instead:
 # pattern = "^(ex|rush|exam)\\d+: .+"
+
+[norminette]
+# In general mode this defaults to false (advisory only).
+# In piscine mode this defaults to true (blocking).
+strict = true
 ```
 
 If `.ganesha.toml` is absent all hooks run with safe defaults:
@@ -232,9 +239,14 @@ no functions are blocked and the built-in commit pattern is used.
 
 ### norminette
 
-Runs `norminette` on every staged `.c` and `.h` file. A passing file
-produces no output. Violations are printed to stderr and the commit
-is blocked.
+Runs `norminette` on every staged `.c` and `.h` file.
+
+- In `mode = "piscine"`: strict and blocking (current behaviour).
+- In `mode = "general"`: runs with `--use-tabsize=4`; by default
+  violations are advisory (`[norminette] strict = false`) and the hook
+  only blocks when `strict = true`.
+- In `mode = "general"`, if `norminette` is not installed, the check is
+  skipped with an informational message.
 
 Example failure:
 
@@ -253,10 +265,11 @@ Error: SPC_BEFORE_OPERATOR  (line 3, col 5)
 
 ### c-compiler
 
-Runs `cc -Wall -Wextra -Werror -fsyntax-only` on each staged `.c`
-file individually. Using `-fsyntax-only` avoids generating `.o` files
-and works correctly even when headers from other staged files are not
-yet on disk. All errors are reported before the hook exits.
+Runs `cc -Wall -Wextra -Werror -fsyntax-only` on each staged source
+file individually (`.c` in piscine mode, plus `.cc`/`.cpp`/`.cxx` in
+general mode). Using `-fsyntax-only` avoids generating `.o` files and
+works correctly even when headers from other staged files are not yet
+on disk. All errors are reported before the hook exits.
 
 Example failure:
 
@@ -277,7 +290,9 @@ compile_error.c:4:5: error: unknown type name 'ints'
 ### forbidden-functions
 
 Scans staged `.c` files for calls to functions listed in the
-`[forbidden]` section of `.ganesha.toml`. Detection uses the
+`[forbidden]` section of `.ganesha.toml` in `mode = "piscine"`.
+In `mode = "general"` this hook is skipped entirely.
+Detection uses the
 regex pattern `\b(func_name)\s*\(`, so:
 
 - `ft_printf(` is **not** flagged when `printf` is forbidden.

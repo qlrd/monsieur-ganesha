@@ -57,6 +57,18 @@ import sys
 from ganesha import checks, config, xp
 
 
+def _run_forbidden(files: list[str]) -> bool:
+    """Run forbidden-functions check respecting project mode."""
+    cfg = config.load_config()
+    if cfg.project.mode == "general":
+        print(
+            "INFO: forbidden-functions ignorado em mode='general'.",
+            file=sys.stderr,
+        )
+        return True
+    return checks.forbidden.check(files, cfg.forbidden.functions)
+
+
 def main() -> None:
     """Parse command-line arguments and dispatch to the correct check.
 
@@ -120,16 +132,21 @@ def main() -> None:
 
     try:
         if args.command == "norminette":
-            ok = checks.norminette.check(args.files)
+            cfg = config.load_config()
+            ok = checks.norminette.check(
+                args.files,
+                general_mode=cfg.project.mode == "general",
+                strict=cfg.norminette.strict,
+            )
             if not ok:
                 xp.record_failure()
         elif args.command == "compiler":
-            ok = checks.compiler.check(args.files)
+            cfg = config.load_config()
+            ok = checks.compiler.check(args.files, mode=cfg.project.mode)
             if not ok:
                 xp.record_failure()
         elif args.command == "forbidden":
-            cfg = config.load_config()
-            ok = checks.forbidden.check(args.files, cfg.forbidden.functions)
+            ok = _run_forbidden(args.files)
             if not ok:
                 xp.record_failure()
         elif args.command == "commit-msg":

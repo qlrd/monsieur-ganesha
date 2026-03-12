@@ -56,6 +56,7 @@ class ProjectConfig:
     """
 
     name: Optional[str] = None
+    mode: str = "piscine"
 
 
 @dataclass
@@ -107,6 +108,13 @@ class CommitConfig:
 
 
 @dataclass
+class NorminetteConfig:
+    """Norminette configuration from the ``[norminette]`` TOML table."""
+
+    strict: bool = True
+
+
+@dataclass
 class Config:
     """Root configuration object returned by :func:`load_config`.
 
@@ -120,11 +128,14 @@ class Config:
         forbidden: Forbidden-function list from the ``[forbidden]``
             table.
         commit: Commit-message pattern from the ``[commit]`` table.
+        norminette: Norminette behaviour flags from the ``[norminette]``
+            table.
     """
 
     project: ProjectConfig = field(default_factory=ProjectConfig)
     forbidden: ForbiddenConfig = field(default_factory=ForbiddenConfig)
     commit: CommitConfig = field(default_factory=CommitConfig)
+    norminette: NorminetteConfig = field(default_factory=NorminetteConfig)
 
 
 def load_config(root: Optional[Path] = None) -> Config:
@@ -180,13 +191,33 @@ def load_config(root: Optional[Path] = None) -> Config:
     except tomllib.TOMLDecodeError as e:
         raise ValueError(f"TOML inválido em {path}: {e}") from e
 
-    project = ProjectConfig(
-        name=data.get("project", {}).get("name"),
-    )
+    mode = data.get("project", {}).get("mode", "piscine")
+    if mode not in ("piscine", "general"):
+        raise ValueError(
+            f"Valor inválido para [project].mode: {mode!r} "
+            "(use 'piscine' ou 'general')"
+        )
+    strict_value = data.get("norminette", {}).get("strict")
+    if strict_value is None:
+        strict = mode == "piscine"
+    elif isinstance(strict_value, bool):
+        strict = strict_value
+    else:
+        raise ValueError(
+            "Valor inválido para [norminette].strict "
+            f"(esperado booleano, recebido {strict_value!r})"
+        )
+    project = ProjectConfig(name=data.get("project", {}).get("name"), mode=mode)
     forbidden = ForbiddenConfig(
         functions=data.get("forbidden", {}).get("functions", []),
     )
     commit = CommitConfig(
         pattern=data.get("commit", {}).get("pattern"),
     )
-    return Config(project=project, forbidden=forbidden, commit=commit)
+    norminette = NorminetteConfig(strict=strict)
+    return Config(
+        project=project,
+        forbidden=forbidden,
+        commit=commit,
+        norminette=norminette,
+    )

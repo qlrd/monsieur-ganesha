@@ -11,7 +11,7 @@
   description: Compila arquivos .c com -Wall -Wextra -Werror (syntax check)
   entry: ganesha compiler
   language: python
-  files: '\.c$'
+  files: '\.(c|cc|cpp|cxx)$'
   pass_filenames: true
 
 - id: forbidden-functions

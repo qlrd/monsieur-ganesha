@@ -36,7 +36,9 @@ import sys
 from collections.abc import Sequence
 
 
-def check(files: Sequence[str]) -> bool:
+def check(
+    files: Sequence[str], *, general_mode: bool = False, strict: bool = True
+) -> bool:
     """Run ``norminette`` on all ``.c`` and ``.h`` files in *files*.
 
     Filters *files* to include only those ending in ``.c`` or ``.h``,
@@ -92,14 +94,25 @@ def check(files: Sequence[str]) -> bool:
     if not c_files:
         return True
 
+    cmd = ["norminette"]
+    if general_mode:
+        cmd.append("--use-tabsize=4")
+    cmd.extend(c_files)
+
     try:
         result = subprocess.run(
-            ["norminette", *c_files],
+            cmd,
             capture_output=True,
             text=True,
             check=False,
         )
     except FileNotFoundError:
+        if general_mode:
+            print(
+                "INFO: norminette não encontrado; check advisory ignorado.",
+                file=sys.stderr,
+            )
+            return True
         print(
             "ERRO: norminette não encontrado.\nInstale com: pip install norminette",
             file=sys.stderr,
@@ -109,6 +122,8 @@ def check(files: Sequence[str]) -> bool:
     if result.returncode != 0:
         print(result.stdout, end="", file=sys.stderr)
         print(result.stderr, end="", file=sys.stderr)
+        if general_mode and not strict:
+            return True
         return False
 
     return True

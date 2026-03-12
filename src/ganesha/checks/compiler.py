@@ -35,7 +35,7 @@ import sys
 from collections.abc import Sequence
 
 
-def check(files: Sequence[str]) -> bool:
+def check(files: Sequence[str], mode: str = "piscine") -> bool:
     """Run ``cc -Wall -Wextra -Werror -fsyntax-only`` on each ``.c`` file.
 
     Iterates over *files*, skips non-``.c`` entries, and invokes cc
@@ -88,7 +88,11 @@ def check(files: Sequence[str]) -> bool:
           cc into the :class:`subprocess.CompletedProcess` result so
           they can be forwarded to *stderr* of the hook process.
     """
-    c_files = [f for f in files if f.endswith(".c")]
+    valid_extensions = (".c",)
+    if mode == "general":
+        valid_extensions = (".c", ".cc", ".cpp", ".cxx")
+
+    c_files = [f for f in files if f.endswith(valid_extensions)]
 
     if not c_files:
         return True
