@@ -53,3 +53,22 @@ jobs:
         with:
           files: coverage.xml
           fail_ci_if_error: false
+
+  debian-stable-py310:
+    name: Debian stable / py3.10 tests
+    runs-on: ubuntu-latest
+    container: debian:stable
+
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4
+
+      - name: Install Python and pip (APT)
+        run: |
+          apt-get update
+          apt-get install -y python3 python3-pip
+
+      - name: Install package and pytest
+        run: python3 -m pip install --break-system-packages -e . pytest
+
+      - name: Run tests
+        run: python3 -m pytest -q
