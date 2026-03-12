@@ -168,6 +168,8 @@ Run the setup script from inside your piscine repository:
 
 ```bash
 wget -qO- https://raw.githubusercontent.com/qlrd/monsieur-ganesha/main/install.sh | bash
+# or
+curl -fsSL https://raw.githubusercontent.com/qlrd/monsieur-ganesha/main/install.sh | bash
 ```
 
 The script will:
