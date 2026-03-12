@@ -167,7 +167,7 @@ passes here, it will pass Moulinette on those checks.
 Run the setup script from inside your piscine repository:
 
 ```bash
-bash /path/to/monsieur-ganesha/install.sh
+wget -qO- https://raw.githubusercontent.com/qlrd/monsieur-ganesha/main/install.sh | bash
 ```
 
 The script will:
